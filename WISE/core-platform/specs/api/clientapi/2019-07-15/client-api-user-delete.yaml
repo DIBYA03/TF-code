@@ -1,0 +1,94 @@
+openapi: 3.0.1
+info:
+  title: ${api_name}
+  description: ${api_name} ${api_version}
+  version: ${api_version}
+servers:
+- url: https://${domain_name}/${api_version}
+  description: ${server_description}
+- url: https://${domain_name}/${api_stage}
+  description: ${server_description}
+paths:
+  /user/{userId}:
+    delete:
+      tags:
+      - Users
+      description: Delete user by id (dev only)
+      operationId: DeleteUser
+      parameters:
+      - name: userId
+        in: path
+        description: User id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: '#/components/headers/X-Requested-With'
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      security:
+      - WiseUsersSandboxTestingPoolAuthorizer: []
+      x-amazon-apigateway-integration:
+        passthroughBehavior: when_no_match
+        connectionType: INTERNET
+        uri: ${user_delete_lambda}
+        httpMethod: POST
+        contentHandling: CONVERT_TO_TEXT
+        type: aws_proxy
+        responses:
+          default:
+            statusCode: 200
+        responseTemplates:
+          application/json: |
+            {}
+components:
+  headers:
+    X-Requested-With:
+      description: CORS origin sites allowed
+      style: simple
+      explode: false
+      schema:
+        type: string
+    Access-Control-Allow-Origin:
+      description: CORS origin sites allowed
+      style: simple
+      explode: false
+      schema:
+        type: string
+    Access-Control-Allow-Methods:
+      description: CORS http methods allows
+      style: simple
+      explode: false
+      schema:
+        type: string
+    Access-Control-Allow-Headers:
+      description: CORS request headers allowed
+      style: simple
+      explode: false
+      schema:
+        type: string
+  securitySchemes:
+    WiseUsersSandboxTestingPoolAuthorizer:
+      type: apiKey
+      description: Cognito Auth Server
+      name: Authorization
+      in: header
+      x-amazon-apigateway-authtype: cognito_user_pools
+      x-amazon-apigateway-authorizer:
+        providerARNs:
+        - ${cognito_pool_arn}
+        type: cognito_user_pools

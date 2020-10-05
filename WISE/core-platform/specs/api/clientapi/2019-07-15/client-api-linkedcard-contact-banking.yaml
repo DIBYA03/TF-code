@@ -1,0 +1,547 @@
+openapi: 3.0.1
+info:
+  title: ${api_name}
+  description: ${api_name} ${api_version}
+  version: ${api_version}
+servers:
+- url: https://${domain_name}/${api_version}
+  description: ${server_description}
+- url: https://${domain_name}/${api_stage}
+  description: ${server_description}
+paths:
+  /banking/business/{businessId}/contact/{contactId}/linkedcard:
+    post:
+      tags:
+      - Business Contact Linked Card
+      description: Create Linked Card for Business Contact
+      operationId: CreateBusinessContactLinkedCard
+      parameters:
+      - name: businessId
+        in: path
+        description: Business id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: contactId
+        in: path
+        description: Contact id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LinkedCardCreate"
+        required: true
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: '#/components/headers/X-Requested-With'
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LinkedCard"
+        404:
+          description: Not Found
+          content: {}
+      security:
+      - WiseUsersSandboxTestingPoolAuthorizer: []
+      x-amazon-apigateway-integration:
+        passthroughBehavior: when_no_match
+        connectionType: INTERNET
+        uri: ${banking_business_contact_linkedcard_lambda}
+        httpMethod: POST
+        contentHandling: CONVERT_TO_TEXT
+        type: aws_proxy
+        responses:
+          default:
+            statusCode: 200
+        responseTemplates:
+          application/json: |
+            {}
+    get:
+      tags:
+      - Business Contact Linked Card
+      description: Get Linked Cards for Business Contact
+      operationId: GetBusinessContactLinkedCards
+      parameters:
+      - name: offset
+        in: query
+        description: Offset of items to return
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+      - name: limit
+        in: query
+        description: Max number of item to return
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+      - name: businessId
+        in: path
+        description: Business id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: contactId
+        in: path
+        description: Contact id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: '#/components/headers/X-Requested-With'
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/LinkedCard"
+        404:
+          description: Not Found
+          content: {}
+      security:
+      - WiseUsersSandboxTestingPoolAuthorizer: []
+      x-amazon-apigateway-integration:
+        passthroughBehavior: when_no_match
+        connectionType: INTERNET
+        uri: ${banking_business_contact_linkedcard_lambda}
+        httpMethod: POST
+        contentHandling: CONVERT_TO_TEXT
+        type: aws_proxy
+        responses:
+          default:
+            statusCode: 200
+        responseTemplates:
+          application/json: |
+            {}
+    options:
+      tags:
+      - Business Contact Linked Card
+      parameters:
+      - name: businessId
+        in: path
+        description: Business id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: contactId
+        in: path
+        description: Contact id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: '#/components/headers/X-Requested-With'
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+          content: {}
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.X-Requested-With: '''*'''
+              method.response.header.Access-Control-Allow-Methods: '''DELETE, GET, OPTIONS, PATCH, POST'''
+              method.response.header.Access-Control-Allow-Headers: '''Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Requested-With,X-Amz-Security-Token,Access-Control-Allow-Origin'''
+              method.response.header.Access-Control-Allow-Origin: '''*'''
+        passthroughBehavior: when_no_match
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        type: mock
+  /banking/business/{businessId}/contact/{contactId}/linkedcard/{cardId}:
+    get:
+      tags:
+      - Business Contact Linked Card
+      description: Get Specific Linked Card for Business Contact
+      operationId: GetBusinessContactLinkedCard
+      parameters:
+      - name: businessId
+        in: path
+        description: Business id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: contactId
+        in: path
+        description: Contact id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: cardId
+        in: path
+        description: Card id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: '#/components/headers/X-Requested-With'
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LinkedCard"
+        404:
+          description: Not Found
+          content: {}
+      security:
+      - WiseUsersSandboxTestingPoolAuthorizer: []
+      x-amazon-apigateway-integration:
+        passthroughBehavior: when_no_match
+        connectionType: INTERNET
+        uri: ${banking_business_contact_linkedcard_lambda}
+        httpMethod: POST
+        contentHandling: CONVERT_TO_TEXT
+        type: aws_proxy
+        responses:
+          default:
+            statusCode: 200
+        responseTemplates:
+          application/json: |
+            {}
+    delete:
+      tags:
+        - Business Contact Linked Card
+      description: Delete Specific Linked Card for Business Contact
+      operationId: DeleteBusinessContactLinkedCard
+      parameters:
+        - name: businessId
+          in: path
+          description: Business id
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: contactId
+          in: path
+          description: Contact id
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: cardId
+          in: path
+          description: Card id
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: "#/components/headers/X-Requested-With"
+            Access-Control-Allow-Headers:
+              $ref: "#/components/headers/Access-Control-Allow-Headers"
+            Access-Control-Allow-Methods:
+              $ref: "#/components/headers/Access-Control-Allow-Methods"
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      security:
+        - WiseUsersSandboxTestingPoolAuthorizer: []
+      x-amazon-apigateway-integration:
+        passthroughBehavior: when_no_match
+        connectionType: INTERNET
+        uri: ${banking_business_contact_linkedcard_lambda}
+        httpMethod: POST
+        contentHandling: CONVERT_TO_TEXT
+        type: aws_proxy
+        responses:
+          default:
+            statusCode: 200
+        responseTemplates:
+          application/json: |
+            {}
+    options:
+      tags:
+      - Business Contact Linked Card
+      parameters:
+      - name: businessId
+        in: path
+        description: Business id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: contactId
+        in: path
+        description: Contact id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: cardId
+        in: path
+        description: Card id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: '#/components/headers/X-Requested-With'
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+          content: {}
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.X-Requested-With: '''*'''
+              method.response.header.Access-Control-Allow-Methods: '''DELETE, GET, OPTIONS, PATCH, POST'''
+              method.response.header.Access-Control-Allow-Headers: '''Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Requested-With,X-Amz-Security-Token,Access-Control-Allow-Origin'''
+              method.response.header.Access-Control-Allow-Origin: '''*'''
+        passthroughBehavior: when_no_match
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        type: mock
+components:
+  schemas:
+    LinkedAccountPermission:
+      title: Linked Account Permission
+      type: string
+      description: Permission  Enum
+      enum:
+        - sendOnly
+        - receiveOnly
+        - sendAndReceive
+    AddressType:
+      title: AddressType
+      type: string
+      description: Address  Enum
+      enum:
+        - legal
+        - mailing
+        - shipping
+    Address:
+      title: Address
+      type: object
+      properties:
+        addressType:
+          $ref: "#/components/schemas/AddressType"
+        streetAddress:
+          type: string
+          description: Street address
+        addressLine2:
+          type: string
+          description: Unit, suite, or PO Box
+          nullable: true
+        city:
+          type: string
+          description: City name
+        state:
+          type: string
+          description: State or province name or short form
+        country:
+          type: string
+          description: Country code (ISO 3166 2-Alpha)
+        postalCode:
+          type: string
+          description: Postal or zip code
+        latitude:
+          type: number
+          description: Latitude of address
+          format: float64
+          nullable: true
+        longitude:
+          type: number
+          description: Longitude of address
+          format: float64
+          nullable: true
+      description: Address Object
+      readOnly: true
+    LinkedCardCreate:
+      title: Linked Card Create
+      type: object
+      description: Linked Card Create
+      properties:
+        cardHolderName:
+          type: string
+        alias:
+          type: string
+        cardNumber:
+          type: string
+        expirationDate:
+          type: string
+          description: Card expiration date
+          nullable: true
+          example: ISO8601 date format e.g. YYYY-MM-DD
+        cvvCode:
+          type: string
+        permission:
+          $ref: "#/components/schemas/LinkedAccountPermission"
+        billingAddress:
+          anyOf:
+            - $ref: "#/components/schemas/Address"
+    LinkedCard:
+      title: Linked Card
+      type: object
+      description: Linked Card
+      properties:
+        id:
+          type: string
+          nullable: true
+        businessId:
+          type: string
+          nullable: true
+        contactId:
+          type: string
+          nullable: true
+        registeredCardId:
+          type: string
+          nullable: true
+        registeredBankName:
+          type: string
+          nullable: true
+        cardNumberMasked:
+          type: string
+        cardBrand:
+          type: string
+        cardType:
+          type: string
+        cardIssuer:
+          type: string
+        expirationDate:
+          type: string
+        cvvCode:
+          type: string
+        fastFundsEnabled:
+          type: boolean
+          nullable: true
+        cardHolderName:
+          type: string
+        alias:
+          type: string
+          nullable: true
+        permission:
+          $ref: "#/components/schemas/LinkedAccountPermission"
+        billingAddress:
+          anyOf:
+            - $ref: "#/components/schemas/Address"
+            - nullable: true
+        verified:
+          type: boolean
+          nullable: true
+        created:
+          type: string
+          description: Date created
+          example: YYYY-MM-DDTHH:MM:SSZ or YYYY-MM-DDTHH:MM:SS.SSSZ
+        modified:
+          type: string
+          description: Date modified
+          example: YYYY-MM-DDTHH:MM:SSZ or YYYY-MM-DDTHH:MM:SS.SSSZ
+  headers:
+    X-Requested-With:
+      description: CORS origin sites allowed
+      style: simple
+      explode: false
+      schema:
+        type: string
+    Access-Control-Allow-Origin:
+      description: CORS origin sites allowed
+      style: simple
+      explode: false
+      schema:
+        type: string
+    Access-Control-Allow-Methods:
+      description: CORS http methods allows
+      style: simple
+      explode: false
+      schema:
+        type: string
+    Access-Control-Allow-Headers:
+      description: CORS request headers allowed
+      style: simple
+      explode: false
+      schema:
+        type: string
+  securitySchemes:
+    WiseUsersSandboxTestingPoolAuthorizer:
+      type: apiKey
+      description: Cognito Auth Server
+      name: Authorization
+      in: header
+      x-amazon-apigateway-authtype: cognito_user_pools
+      x-amazon-apigateway-authorizer:
+        providerARNs:
+        - ${cognito_pool_arn}
+        type: cognito_user_pools

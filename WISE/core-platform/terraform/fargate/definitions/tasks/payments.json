@@ -1,0 +1,270 @@
+[
+  {
+    "name": "${name}",
+    "image": "${ecr_image}:${ecr_image_tag}",
+    "essential": true,
+    "cpu": ${fargate_cpu},
+    "memory": ${fargate_memory},
+    "networkMode": "awsvpc",
+    "privileged": false,
+    "readonlyRootFilesystem": true,
+    "portMappings": [
+      {
+        "containerPort": ${container_port},
+        "hostPort": ${host_port}
+      }
+    ],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "/ecs/${aws_log_group}",
+        "awslogs-region": "${aws_region}",
+        "awslogs-stream-prefix": "${name}"
+      }
+    },
+    "environment" : [
+      {
+        "name": "API_ENV",
+        "value": "${api_env}"
+      },
+      {
+        "name": "AWS_S3_BUCKET_DOCUMENT",
+        "value": "${aws_s3_bucket_document}"
+      },
+      {
+        "name": "S3_ACH_PULL_WHITELIST",
+        "value": "${s3_ach_pull_whitelist}"
+      },
+      {
+        "name": "CONTAINER_LISTEN_PORT",
+        "value": "${container_port}"
+      },
+      {
+        "name": "MAINTENANCE_ENABLED",
+        "value": "${maintenance_enabled}"
+      },
+      {
+        "name": "KINESIS_FIREHOSE_REGION_BANK_NOTIFICATION",
+        "value": "${aws_region}"
+      },
+      {
+        "name": "MONEY_REQUEST_SQS_URL",
+        "value": "${payments_sqs_url}"
+      },
+      {
+        "name": "PAYMENTS_URL",
+        "value": "${payments_url}"
+      },
+      {
+        "name": "SQS_BANKING_REGION",
+        "value": "${sqs_banking_region}"
+      },
+      {
+        "name": "SQS_BANKING_URL",
+        "value": "${sqs_banking_url}"
+      },
+      {
+        "name" : "SQS_FIFO_REGION_ACTIVITY",
+        "value" : "${aws_region}"
+      },
+      {
+        "name" : "SQS_FIFO_REGION_BBVA_NOTIFICATION",
+        "value" : "${aws_region}"
+      },
+            {
+        "name": "GRPC_SERVICE_PORT",
+        "value": "${grpc_port}"
+      },
+      {
+        "name": "USE_TRANSACTION_SERVICE",
+        "value": "${use_transaction_service}"
+      },
+      {
+        "name": "USE_BANKING_SERVICE",
+        "value": "${use_banking_service}"
+      },
+      {
+        "name": "USE_INVOICE_SERVICE",
+        "value": "${use_invoice_service}"
+      }
+    ],
+    "secrets": [
+      {
+        "name": "BBVA_APP_ENV",
+        "valueFrom": "${bbva_app_env}"
+      },
+      {
+        "name": "BBVA_APP_ID",
+        "valueFrom": "${bbva_app_id}"
+      },
+      {
+        "name": "BBVA_APP_NAME",
+        "valueFrom": "${bbva_app_name}"
+      },
+      {
+        "name": "BBVA_APP_SECRET",
+        "valueFrom": "${bbva_app_secret}"
+      },
+      {
+        "name": "CORE_DB_WRITE_URL",
+        "valueFrom": "${core_db_write_url}"
+      },
+      {
+        "name": "CORE_DB_READ_URL",
+        "valueFrom": "${core_db_read_url}"
+      },
+      {
+        "name": "CORE_DB_WRITE_PORT",
+        "valueFrom": "${core_db_write_port}"
+      },
+      {
+        "name": "CORE_DB_READ_PORT",
+        "valueFrom": "${core_db_read_port}"
+      },
+      {
+        "name": "CORE_DB_NAME",
+        "valueFrom": "${core_db_name}"
+      },
+      {
+        "name": "CORE_DB_USER",
+        "valueFrom": "${core_db_user}"
+      },
+      {
+        "name": "CORE_DB_PASSWD",
+        "valueFrom": "${core_db_passwd}"
+      },
+      {
+        "name": "BANK_DB_WRITE_URL",
+        "valueFrom": "${bank_db_write_url}"
+      },
+      {
+        "name": "BANK_DB_READ_URL",
+        "valueFrom": "${bank_db_read_url}"
+      },
+      {
+        "name": "BANK_DB_WRITE_PORT",
+        "valueFrom": "${bank_db_write_port}"
+      },
+      {
+        "name": "BANK_DB_READ_PORT",
+        "valueFrom": "${bank_db_read_port}"
+      },
+      {
+        "name": "BANK_DB_NAME",
+        "valueFrom": "${bank_db_name}"
+      },
+      {
+        "name": "BANK_DB_USER",
+        "valueFrom": "${bank_db_user}"
+      },
+      {
+        "name": "BANK_DB_PASSWD",
+        "valueFrom": "${bank_db_passwd}"
+      },
+      {
+        "name": "IDENTITY_DB_WRITE_URL",
+        "valueFrom": "${identity_db_write_url}"
+      },
+      {
+        "name": "IDENTITY_DB_READ_URL",
+        "valueFrom": "${identity_db_read_url}"
+      },
+      {
+        "name": "IDENTITY_DB_WRITE_PORT",
+        "valueFrom": "${identity_db_write_port}"
+      },
+      {
+        "name": "IDENTITY_DB_READ_PORT",
+        "valueFrom": "${identity_db_read_port}"
+      },
+      {
+        "name": "IDENTITY_DB_NAME",
+        "valueFrom": "${identity_db_name}"
+      },
+      {
+        "name": "IDENTITY_DB_USER",
+        "valueFrom": "${identity_db_user}"
+      },
+      {
+        "name": "IDENTITY_DB_PASSWD",
+        "valueFrom": "${identity_db_passwd}"
+      },
+      {
+        "name": "TXN_DB_WRITE_URL",
+        "valueFrom": "${txn_db_write_url}"
+      },
+      {
+        "name": "TXN_DB_READ_URL",
+        "valueFrom": "${txn_db_read_url}"
+      },
+      {
+        "name": "TXN_DB_WRITE_PORT",
+        "valueFrom": "${txn_db_write_port}"
+      },
+      {
+        "name": "TXN_DB_READ_PORT",
+        "valueFrom": "${txn_db_read_port}"
+      },
+      {
+        "name": "TXN_DB_NAME",
+        "valueFrom": "${txn_db_name}"
+      },
+      {
+        "name": "TXN_DB_USER",
+        "valueFrom": "${txn_db_user}"
+      },
+      {
+        "name": "TXN_DB_PASSWD",
+        "valueFrom": "${txn_db_passwd}"
+      },
+      {
+        "name": "STRIPE_KEY",
+        "valueFrom": "${stripe_key}"
+      },
+      {
+        "name": "STRIPE_PUBLISH_KEY",
+        "valueFrom": "${stripe_publish_key}"
+      },
+      {
+        "name": "STRIPE_WEBHOOK_SECRET",
+        "valueFrom": "${stripe_webhook_secret}"
+      },
+      {
+        "name": "WISE_CLEARING_ACCOUNT_ID",
+        "valueFrom": "${wise_clearing_account_id}"
+      },
+      {
+        "name": "WISE_CLEARING_BUSINESS_ID",
+        "valueFrom": "${wise_clearing_business_id}"
+      },
+      {
+        "name": "WISE_CLEARING_USER_ID",
+        "valueFrom": "${wise_clearing_user_id}"
+      },
+      {
+        "name": "WISE_INVOICE_EMAIL",
+        "valueFrom": "${wise_invoice_email}"
+      },
+      {
+        "name": "PLAID_ENV",
+        "valueFrom": "${plaid_env}"
+      },
+      {
+        "name": "PLAID_PUBLIC_KEY",
+        "valueFrom": "${plaid_public_key}"
+      },
+      {
+        "name": "PLAID_CLIENT_ID",
+        "valueFrom": "${plaid_client_id}"
+      },
+      {
+        "name": "PLAID_SECRET",
+        "valueFrom": "${plaid_secret}"
+      },
+      {
+        "name": "SEGMENT_WEB_WRITE_KEY",
+        "valueFrom": "${segment_web_write_key}"
+      }
+    ]
+  }
+]

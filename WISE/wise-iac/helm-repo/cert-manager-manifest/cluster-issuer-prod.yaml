@@ -1,0 +1,16 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-prod-http
+  labels:
+    name: letsencrypt-prod-http
+spec:
+  acme:
+    email: richard@wise.us
+    privateKeySecretRef:
+      name: letsencrypt-prod-http    
+    server: https://acme-v02.api.letsencrypt.org/directory
+    solvers:
+    - http01:
+        ingress:
+          class: nginx-external

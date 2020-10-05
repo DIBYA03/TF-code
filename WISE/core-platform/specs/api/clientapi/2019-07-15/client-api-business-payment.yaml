@@ -1,0 +1,1153 @@
+openapi: 3.0.1
+info:
+  title: ${api_name}
+  description: ${api_name} ${api_version}
+  version: ${api_version}
+servers:
+- url: https://${domain_name}/${api_version}
+  description: ${server_description}
+- url: https://${domain_name}/${api_stage}
+  description: ${server_description}
+paths:
+  /payment/connection_token:
+    post:
+      tags:
+        - Business Payment
+      description: Get connection token
+      operationId: GetConnectionToken
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PaymentConnectionRequest"
+        required: true
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: "#/components/headers/X-Requested-With"
+            Access-Control-Allow-Headers:
+              $ref: "#/components/headers/Access-Control-Allow-Headers"
+            Access-Control-Allow-Methods:
+              $ref: "#/components/headers/Access-Control-Allow-Methods"
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaymentConnectionResponse"
+        400:
+          description: Bad Request
+          content: {}
+      security:
+        - WiseUsersSandboxTestingPoolAuthorizer: []
+      x-amazon-apigateway-integration:
+        passthroughBehavior: when_no_match
+        connectionType: INTERNET
+        uri: ${payment_connection_token_lamba}
+        httpMethod: POST
+        contentHandling: CONVERT_TO_TEXT
+        type: aws_proxy
+        responses:
+          default:
+            statusCode: 200
+        responseTemplates:
+          application/json: |
+            {}
+    options:
+      tags:
+        - Business Payment
+      parameters:
+        - name: businessId
+          in: path
+          description: Business id
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: "#/components/headers/X-Requested-With"
+            Access-Control-Allow-Headers:
+              $ref: "#/components/headers/Access-Control-Allow-Headers"
+            Access-Control-Allow-Methods:
+              $ref: "#/components/headers/Access-Control-Allow-Methods"
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+          content: {}
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.X-Requested-With: "'*'"
+              method.response.header.Access-Control-Allow-Methods: '''DELETE, GET, OPTIONS, PATCH, POST'''
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Requested-With,X-Amz-Security-Token,Access-Control-Allow-Origin'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        passthroughBehavior: when_no_match
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        type: mock
+  /payment/card_reader:
+    post:
+      tags:
+        - Business Payment
+      description: Create point of sale
+      operationId: CreatePointOfSale
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CardReaderCreate"
+        required: true
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: "#/components/headers/X-Requested-With"
+            Access-Control-Allow-Headers:
+              $ref: "#/components/headers/Access-Control-Allow-Headers"
+            Access-Control-Allow-Methods:
+              $ref: "#/components/headers/Access-Control-Allow-Methods"
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CardReader"
+        400:
+          description: Bad Request
+          content: {}
+      security:
+        - WiseUsersSandboxTestingPoolAuthorizer: []
+      x-amazon-apigateway-integration:
+        passthroughBehavior: when_no_match
+        connectionType: INTERNET
+        uri: ${payment_card_reader_lambda}
+        httpMethod: POST
+        contentHandling: CONVERT_TO_TEXT
+        type: aws_proxy
+        responses:
+          default:
+            statusCode: 200
+        responseTemplates:
+          application/json: |
+            {}
+    get:
+      tags:
+        - Business Payment
+      description: Get List of POS
+      operationId: GetPointOfSales
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: "#/components/headers/X-Requested-With"
+            Access-Control-Allow-Headers:
+              $ref: "#/components/headers/Access-Control-Allow-Headers"
+            Access-Control-Allow-Methods:
+              $ref: "#/components/headers/Access-Control-Allow-Methods"
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CardReader"
+        400:
+          description: Bad Request
+          content: {}
+      security:
+        - WiseUsersSandboxTestingPoolAuthorizer: []
+      x-amazon-apigateway-integration:
+        passthroughBehavior: when_no_match
+        connectionType: INTERNET
+        uri: ${payment_card_reader_lambda}
+        httpMethod: POST
+        contentHandling: CONVERT_TO_TEXT
+        type: aws_proxy
+        responses:
+          default:
+            statusCode: 200
+        responseTemplates:
+          application/json: |
+            {}
+    options:
+      tags:
+        - Business Payment
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: "#/components/headers/X-Requested-With"
+            Access-Control-Allow-Headers:
+              $ref: "#/components/headers/Access-Control-Allow-Headers"
+            Access-Control-Allow-Methods:
+              $ref: "#/components/headers/Access-Control-Allow-Methods"
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+          content: {}
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.X-Requested-With: "'*'"
+              method.response.header.Access-Control-Allow-Methods: '''DELETE, GET, OPTIONS, PATCH, POST'''
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Requested-With,X-Amz-Security-Token,Access-Control-Allow-Origin'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        passthroughBehavior: when_no_match
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        type: mock
+  /payment/card_reader/{cardReaderId}:
+    patch:
+      tags:
+        - Business Payment
+      description: Update point of sale
+      operationId: UpdatePointOfSale
+      parameters:
+        - name: cardReaderId
+          in: path
+          description: Card reader id
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CardReaderUpdate"
+        required: true
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: "#/components/headers/X-Requested-With"
+            Access-Control-Allow-Headers:
+              $ref: "#/components/headers/Access-Control-Allow-Headers"
+            Access-Control-Allow-Methods:
+              $ref: "#/components/headers/Access-Control-Allow-Methods"
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CardReader"
+        400:
+          description: Bad Request
+          content: {}
+      security:
+        - WiseUsersSandboxTestingPoolAuthorizer: []
+      x-amazon-apigateway-integration:
+        passthroughBehavior: when_no_match
+        connectionType: INTERNET
+        uri: ${payment_card_reader_lambda}
+        httpMethod: POST
+        contentHandling: CONVERT_TO_TEXT
+        type: aws_proxy
+        responses:
+          default:
+            statusCode: 200
+        responseTemplates:
+          application/json: |
+            {}
+    get:
+      tags:
+        - Business Payment
+      description: Get point of sale
+      operationId: GetPointOfSale
+      parameters:
+        - name: cardReaderId
+          in: path
+          description: Card reader id
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: "#/components/headers/X-Requested-With"
+            Access-Control-Allow-Headers:
+              $ref: "#/components/headers/Access-Control-Allow-Headers"
+            Access-Control-Allow-Methods:
+              $ref: "#/components/headers/Access-Control-Allow-Methods"
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CardReader"
+        400:
+          description: Bad Request
+          content: {}
+      security:
+        - WiseUsersSandboxTestingPoolAuthorizer: []
+      x-amazon-apigateway-integration:
+        passthroughBehavior: when_no_match
+        connectionType: INTERNET
+        uri: ${payment_card_reader_lambda}
+        httpMethod: POST
+        contentHandling: CONVERT_TO_TEXT
+        type: aws_proxy
+        responses:
+          default:
+            statusCode: 200
+        responseTemplates:
+          application/json: |
+            {}
+    delete:
+      tags:
+        - Business Payment
+      description: Deactivate point of sale
+      operationId: DeactivatePointOfSale
+      parameters:
+        - name: cardReaderId
+          in: path
+          description: Card reader id
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: "#/components/headers/X-Requested-With"
+            Access-Control-Allow-Headers:
+              $ref: "#/components/headers/Access-Control-Allow-Headers"
+            Access-Control-Allow-Methods:
+              $ref: "#/components/headers/Access-Control-Allow-Methods"
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+          content: {}
+        400:
+          description: Bad Request
+          content: {}
+      security:
+        - WiseUsersSandboxTestingPoolAuthorizer: []
+      x-amazon-apigateway-integration:
+        passthroughBehavior: when_no_match
+        connectionType: INTERNET
+        uri: ${payment_card_reader_lambda}
+        httpMethod: POST
+        contentHandling: CONVERT_TO_TEXT
+        type: aws_proxy
+        responses:
+          default:
+            statusCode: 200
+        responseTemplates:
+          application/json: |
+            {}
+    options:
+      tags:
+        - Business Payment
+      parameters:
+        - name: cardReaderId
+          in: path
+          description: Card reader id
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: "#/components/headers/X-Requested-With"
+            Access-Control-Allow-Headers:
+              $ref: "#/components/headers/Access-Control-Allow-Headers"
+            Access-Control-Allow-Methods:
+              $ref: "#/components/headers/Access-Control-Allow-Methods"
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+          content: {}
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.X-Requested-With: "'*'"
+              method.response.header.Access-Control-Allow-Methods: '''DELETE, GET, OPTIONS, PATCH, POST'''
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Requested-With,X-Amz-Security-Token,Access-Control-Allow-Origin'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        passthroughBehavior: when_no_match
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        type: mock
+  /payment/request:
+    post:
+      tags:
+      - Business Payment
+      description: Money Request for Business Contact
+      operationId: InitiateBusinessPOSContactMoneyRequest
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RequestInitiate"
+        required: true
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: '#/components/headers/X-Requested-With'
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MoneyRequest"
+        404:
+          description: Not Found
+          content: {}
+      security:
+      - WiseUsersSandboxTestingPoolAuthorizer: []
+      x-amazon-apigateway-integration:
+        passthroughBehavior: when_no_match
+        connectionType: INTERNET
+        uri: ${payment_request_lambda}
+        httpMethod: POST
+        contentHandling: CONVERT_TO_TEXT
+        type: aws_proxy
+        responses:
+          default:
+            statusCode: 200
+        responseTemplates:
+          application/json: |
+            {}
+    get:
+      tags:
+        - Business Payment
+      description: Get List of Requests
+      operationId: GetPaymentRequests
+      parameters:
+        - name: contactId
+          in: query
+          description: Contact Id
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: "#/components/headers/X-Requested-With"
+            Access-Control-Allow-Headers:
+              $ref: "#/components/headers/Access-Control-Allow-Headers"
+            Access-Control-Allow-Methods:
+              $ref: "#/components/headers/Access-Control-Allow-Methods"
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MoneyRequest"
+        400:
+          description: Bad Request
+          content: {}
+      security:
+        - WiseUsersSandboxTestingPoolAuthorizer: []
+      x-amazon-apigateway-integration:
+        passthroughBehavior: when_no_match
+        connectionType: INTERNET
+        uri: ${payment_request_lambda}
+        httpMethod: POST
+        contentHandling: CONVERT_TO_TEXT
+        type: aws_proxy
+        responses:
+          default:
+            statusCode: 200
+        responseTemplates:
+          application/json: |
+            {}
+    options:
+      tags:
+      - Business Payment
+      parameters:
+      - name: businessId
+        in: path
+        description: Business id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: contactId
+        in: path
+        description: Contact id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: '#/components/headers/X-Requested-With'
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+          content: {}
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.X-Requested-With: '''*'''
+              method.response.header.Access-Control-Allow-Methods: '''DELETE, GET, OPTIONS, PATCH, POST'''
+              method.response.header.Access-Control-Allow-Headers: '''Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Requested-With,X-Amz-Security-Token,Access-Control-Allow-Origin'''
+              method.response.header.Access-Control-Allow-Origin: '''*'''
+        passthroughBehavior: when_no_match
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        type: mock
+  /payment/request/{requestId}:
+    get:
+      tags:
+      - Business Payment
+      description: Get specific payment request
+      operationId: GetPaymentRequest
+      parameters:
+      - name: requestId
+        in: path
+        description: Request id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: '#/components/headers/X-Requested-With'
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MoneyRequest"
+        404:
+          description: Not Found
+          content: {}
+      security:
+      - WiseUsersSandboxTestingPoolAuthorizer: []
+      x-amazon-apigateway-integration:
+        passthroughBehavior: when_no_match
+        connectionType: INTERNET
+        uri: ${payment_request_lambda}
+        httpMethod: POST
+        contentHandling: CONVERT_TO_TEXT
+        type: aws_proxy
+        responses:
+          default:
+            statusCode: 200
+        responseTemplates:
+          application/json: |
+            {}
+    options:
+      tags:
+      - Business Payment
+      parameters:
+      - name: requestId
+        in: path
+        description: Request id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: '#/components/headers/X-Requested-With'
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+          content: {}
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.X-Requested-With: '''*'''
+              method.response.header.Access-Control-Allow-Methods: '''DELETE, GET, OPTIONS, PATCH, POST'''
+              method.response.header.Access-Control-Allow-Headers: '''Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Requested-With,X-Amz-Security-Token,Access-Control-Allow-Origin'''
+              method.response.header.Access-Control-Allow-Origin: '''*'''
+        passthroughBehavior: when_no_match
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        type: mock
+  /payment/capture:
+    post:
+      tags:
+        - Business Payment
+      description: Capture authorized payment
+      operationId: CapturePayment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PaymentCaptureRequest"
+        required: true
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: "#/components/headers/X-Requested-With"
+            Access-Control-Allow-Headers:
+              $ref: "#/components/headers/Access-Control-Allow-Headers"
+            Access-Control-Allow-Methods:
+              $ref: "#/components/headers/Access-Control-Allow-Methods"
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+          content: {}
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BusinessResponseError"
+        404:
+          description: Not Found
+          content: {}
+      security:
+        - WiseUsersSandboxTestingPoolAuthorizer: []
+      x-amazon-apigateway-integration:
+        passthroughBehavior: when_no_match
+        connectionType: INTERNET
+        uri: ${payment_capture_lambda}
+        httpMethod: POST
+        contentHandling: CONVERT_TO_TEXT
+        type: aws_proxy
+        responses:
+          default:
+            statusCode: 200
+        responseTemplates:
+          application/json: |
+            {}
+    options:
+      tags:
+      - Business Payment
+      parameters:
+      - name: businessId
+        in: path
+        description: Business id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: contactId
+        in: path
+        description: Contact id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: moneyRequestId
+        in: path
+        description: Money request id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: '#/components/headers/X-Requested-With'
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+          content: {}
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.X-Requested-With: '''*'''
+              method.response.header.Access-Control-Allow-Methods: '''DELETE, GET, OPTIONS, PATCH, POST'''
+              method.response.header.Access-Control-Allow-Headers: '''Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Requested-With,X-Amz-Security-Token,Access-Control-Allow-Origin'''
+              method.response.header.Access-Control-Allow-Origin: '''*'''
+        passthroughBehavior: when_no_match
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        type: mock
+  /payment/receipt:
+    post:
+      tags:
+        - Business Payment
+      description: Send card reader Receipt
+      operationId: SendCardReaderReceipt
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReceiptCreate"
+        required: true
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: "#/components/headers/X-Requested-With"
+            Access-Control-Allow-Headers:
+              $ref: "#/components/headers/Access-Control-Allow-Headers"
+            Access-Control-Allow-Methods:
+              $ref: "#/components/headers/Access-Control-Allow-Methods"
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+          content: {}
+        400:
+          description: Bad Request
+          content: {}
+      security:
+        - WiseUsersSandboxTestingPoolAuthorizer: []
+      x-amazon-apigateway-integration:
+        passthroughBehavior: when_no_match
+        connectionType: INTERNET
+        uri: ${payment_receipt_lambda}
+        httpMethod: POST
+        contentHandling: CONVERT_TO_TEXT
+        type: aws_proxy
+        responses:
+          default:
+            statusCode: 200
+        responseTemplates:
+          application/json: |
+            {}
+    options:
+      tags:
+        - Business Payment
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: "#/components/headers/X-Requested-With"
+            Access-Control-Allow-Headers:
+              $ref: "#/components/headers/Access-Control-Allow-Headers"
+            Access-Control-Allow-Methods:
+              $ref: "#/components/headers/Access-Control-Allow-Methods"
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+          content: {}
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.X-Requested-With: "'*'"
+              method.response.header.Access-Control-Allow-Methods: '''DELETE, GET, OPTIONS, PATCH, POST'''
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Requested-With,X-Amz-Security-Token,Access-Control-Allow-Origin'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        passthroughBehavior: when_no_match
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        type: mock
+  /payment/receipt/{receiptId}:
+    get:
+      tags:
+        - Business Payment
+      description: Get request receipt signed url
+      operationId: GetRequestReceiptSignedUrl
+      parameters:
+        - name: businessId
+          in: path
+          description: Business id
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: receiptId
+          in: path
+          description: Receipt id
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: "#/components/headers/X-Requested-With"
+            Access-Control-Allow-Headers:
+              $ref: "#/components/headers/Access-Control-Allow-Headers"
+            Access-Control-Allow-Methods:
+              $ref: "#/components/headers/Access-Control-Allow-Methods"
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReceiptSignedUrl"
+        400:
+          description: Bad Request
+          content: {}
+      security:
+        - WiseUsersSandboxTestingPoolAuthorizer: []
+      x-amazon-apigateway-integration:
+        passthroughBehavior: when_no_match
+        connectionType: INTERNET
+        uri: ${payment_receipt_lambda}
+        httpMethod: POST
+        contentHandling: CONVERT_TO_TEXT
+        type: aws_proxy
+        responses:
+          default:
+            statusCode: 200
+        responseTemplates:
+          application/json: |
+            {}
+    options:
+      tags:
+        - Business Payment
+      parameters:
+        - name: businessId
+          in: path
+          description: Business id
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: receiptId
+          in: path
+          description: Receipt id
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: "#/components/headers/X-Requested-With"
+            Access-Control-Allow-Headers:
+              $ref: "#/components/headers/Access-Control-Allow-Headers"
+            Access-Control-Allow-Methods:
+              $ref: "#/components/headers/Access-Control-Allow-Methods"
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+          content: {}
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.X-Requested-With: "'*'"
+              method.response.header.Access-Control-Allow-Methods: '''DELETE, GET, OPTIONS, PATCH, POST'''
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Requested-With,X-Amz-Security-Token,Access-Control-Allow-Origin'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        passthroughBehavior: when_no_match
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        type: mock
+  /payment/invoice/{invoiceId}:
+    get:
+      tags:
+        - Business Payment
+      description: Get request invoice signed url
+      operationId: GetRequestInvoiceSignedUrl
+      parameters:
+        - name: businessId
+          in: path
+          description: Business id
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: invoiceId
+          in: path
+          description: Invoice id
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: "#/components/headers/X-Requested-With"
+            Access-Control-Allow-Headers:
+              $ref: "#/components/headers/Access-Control-Allow-Headers"
+            Access-Control-Allow-Methods:
+              $ref: "#/components/headers/Access-Control-Allow-Methods"
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReceiptSignedUrl"
+        400:
+          description: Bad Request
+          content: {}
+      security:
+        - WiseUsersSandboxTestingPoolAuthorizer: []
+      x-amazon-apigateway-integration:
+        passthroughBehavior: when_no_match
+        connectionType: INTERNET
+        uri: ${payment_invoice_lambda}
+        httpMethod: POST
+        contentHandling: CONVERT_TO_TEXT
+        type: aws_proxy
+        responses:
+          default:
+            statusCode: 200
+        responseTemplates:
+          application/json: |
+            {}
+    options:
+      tags:
+        - Business Payment
+      parameters:
+        - name: businessId
+          in: path
+          description: Business id
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: invoiceId
+          in: path
+          description: Invoice id
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: "#/components/headers/X-Requested-With"
+            Access-Control-Allow-Headers:
+              $ref: "#/components/headers/Access-Control-Allow-Headers"
+            Access-Control-Allow-Methods:
+              $ref: "#/components/headers/Access-Control-Allow-Methods"
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+          content: {}
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.X-Requested-With: "'*'"
+              method.response.header.Access-Control-Allow-Methods: '''DELETE, GET, OPTIONS, PATCH, POST'''
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Requested-With,X-Amz-Security-Token,Access-Control-Allow-Origin'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        passthroughBehavior: when_no_match
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        type: mock
+components:
+  schemas:
+    PaymentConnectionRequest:
+      title: PaymentConnectionRequest
+      type: object
+      properties:
+        businessId:
+          type: string
+    PaymentConnectionResponse:
+      title: PaymentConnectionResponse
+      type: object
+      properties:
+        connectionToken:
+          type: string
+    CardReader:
+      title: CardReader
+      type: object
+      properties:
+        id:
+          type: string
+        businessId:
+          type: string
+        alias:
+          type: string
+        deviceType:
+          type: string
+        serialNumber:
+          type: string
+        lastConnected:
+          type: string
+          description: Date created
+          example: YYYY-MM-DDTHH:MM:SSZ or YYYY-MM-DDTHH:MM:SS.SSSZ
+        created:
+          type: string
+          description: Date created
+          example: YYYY-MM-DDTHH:MM:SSZ or YYYY-MM-DDTHH:MM:SS.SSSZ
+        modified:
+          type: string
+          description: Date created
+          example: YYYY-MM-DDTHH:MM:SSZ or YYYY-MM-DDTHH:MM:SS.SSSZ
+        deactivated:
+          type: string
+          description: Date created
+          example: YYYY-MM-DDTHH:MM:SSZ or YYYY-MM-DDTHH:MM:SS.SSSZ
+    CardReaderCreate:
+      title: CardReaderCreate
+      type: object
+      properties:
+        businessId:
+          type: string
+        alias:
+          type: string
+        deviceType:
+          type: string
+        serialNumber:
+          type: string
+    CardReaderUpdate:
+      title: CardReaderUpdate
+      type: object
+      properties:
+        id:
+          type: string
+        businessId:
+          type: string
+        alias:
+          type: string
+        lastConnected:
+          type: string
+          description: Date created
+          example: YYYY-MM-DDTHH:MM:SSZ or YYYY-MM-DDTHH:MM:SS.SSSZ
+    CardReaderList:
+      title: CardReaderList
+      type: object
+      properties:
+        businessId:
+          type: string
+    CardReaderGet:
+      title: CardReaderGet
+      type: object
+      properties:
+        businessId:
+          type: string
+    RequestGet:
+      title: RequestGet
+      type: object
+      properties:
+        id:
+          type: string
+        businessId:
+          type: string
+        contactId:
+          type: string
+    PaymentCaptureRequest:
+      title: PaymentCaptureRequest
+      type: object
+      properties:
+        businessId:
+          type: string
+        requestId:
+          type: string
+    ReceiptCreate:
+      title: ReceiptCreate
+      type: object
+      properties:
+        receiptMode:
+          type: string
+        customerContact:
+          type: string
+        requestId:
+          type: string
+  headers:
+    X-Requested-With:
+      description: CORS origin sites allowed
+      style: simple
+      explode: false
+      schema:
+        type: string
+    Access-Control-Allow-Origin:
+      description: CORS origin sites allowed
+      style: simple
+      explode: false
+      schema:
+        type: string
+    Access-Control-Allow-Methods:
+      description: CORS http methods allows
+      style: simple
+      explode: false
+      schema:
+        type: string
+    Access-Control-Allow-Headers:
+      description: CORS request headers allowed
+      style: simple
+      explode: false
+      schema:
+        type: string
+  securitySchemes:
+    WiseUsersSandboxTestingPoolAuthorizer:
+      type: apiKey
+      description: Cognito Auth Server
+      name: Authorization
+      in: header
+      x-amazon-apigateway-authtype: cognito_user_pools
+      x-amazon-apigateway-authorizer:
+        providerARNs:
+        - ${cognito_pool_arn}
+        type: cognito_user_pools

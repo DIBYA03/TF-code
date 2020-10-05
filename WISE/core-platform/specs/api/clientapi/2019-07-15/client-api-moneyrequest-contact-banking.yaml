@@ -1,0 +1,406 @@
+openapi: 3.0.1
+info:
+  title: ${api_name}
+  description: ${api_name} ${api_version}
+  version: ${api_version}
+servers:
+- url: https://${domain_name}/${api_version}
+  description: ${server_description}
+- url: https://${domain_name}/${api_stage}
+  description: ${server_description}
+paths:
+  /banking/business/{businessId}/contact/{contactId}/moneyrequest:
+    post:
+      tags:
+      - Business Contact Money Request
+      description: Money Request for Business Contact
+      operationId: InitiateBusinessContactMoneyRequest
+      parameters:
+      - name: businessId
+        in: path
+        description: Business id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: contactId
+        in: path
+        description: Contact id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RequestInitiate"
+        required: true
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: '#/components/headers/X-Requested-With'
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MoneyRequest"
+        404:
+          description: Not Found
+          content: {}
+      security:
+      - WiseUsersSandboxTestingPoolAuthorizer: []
+      x-amazon-apigateway-integration:
+        passthroughBehavior: when_no_match
+        connectionType: INTERNET
+        uri: ${banking_business_contact_moneyrequest_lambda}
+        httpMethod: POST
+        contentHandling: CONVERT_TO_TEXT
+        type: aws_proxy
+        responses:
+          default:
+            statusCode: 200
+        responseTemplates:
+          application/json: |
+            {}
+    get:
+      tags:
+      - Business Contact Money Request
+      description: Get Money Request for Business Contact
+      operationId: GetBusinessContactMoneyRequests
+      parameters:
+      - name: offset
+        in: query
+        description: Offset of items to return
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+      - name: limit
+        in: query
+        description: Max number of item to return
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+      - name: businessId
+        in: path
+        description: Business id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: contactId
+        in: path
+        description: Contact id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: '#/components/headers/X-Requested-With'
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MoneyRequest"
+        404:
+          description: Not Found
+          content: {}
+      security:
+      - WiseUsersSandboxTestingPoolAuthorizer: []
+      x-amazon-apigateway-integration:
+        passthroughBehavior: when_no_match
+        connectionType: INTERNET
+        uri: ${banking_business_contact_moneyrequest_lambda}
+        httpMethod: POST
+        contentHandling: CONVERT_TO_TEXT
+        type: aws_proxy
+        responses:
+          default:
+            statusCode: 200
+        responseTemplates:
+          application/json: |
+            {}
+    options:
+      tags:
+      - Business Contact Money Request
+      parameters:
+      - name: businessId
+        in: path
+        description: Business id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: contactId
+        in: path
+        description: Contact id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: '#/components/headers/X-Requested-With'
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+          content: {}
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.X-Requested-With: '''*'''
+              method.response.header.Access-Control-Allow-Methods: '''DELETE, GET, OPTIONS, PATCH, POST'''
+              method.response.header.Access-Control-Allow-Headers: '''Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Requested-With,X-Amz-Security-Token,Access-Control-Allow-Origin'''
+              method.response.header.Access-Control-Allow-Origin: '''*'''
+        passthroughBehavior: when_no_match
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        type: mock
+  /banking/business/{businessId}/contact/{contactId}/moneyrequest/{requestId}:
+    get:
+      tags:
+      - Business Contact Money Request
+      description: Get Specific Money Request for Business Contact
+      operationId: GetBusinessContactMoneyRequest
+      parameters:
+      - name: businessId
+        in: path
+        description: Business id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: contactId
+        in: path
+        description: Contact id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: requestId
+        in: path
+        description: Request id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: '#/components/headers/X-Requested-With'
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MoneyRequest"
+        404:
+          description: Not Found
+          content: {}
+      security:
+      - WiseUsersSandboxTestingPoolAuthorizer: []
+      x-amazon-apigateway-integration:
+        passthroughBehavior: when_no_match
+        connectionType: INTERNET
+        uri: ${banking_business_contact_moneyrequest_lambda}
+        httpMethod: POST
+        contentHandling: CONVERT_TO_TEXT
+        type: aws_proxy
+        responses:
+          default:
+            statusCode: 200
+        responseTemplates:
+          application/json: |
+            {}
+    options:
+      tags:
+      - Business Contact Money Request
+      parameters:
+      - name: businessId
+        in: path
+        description: Business id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: contactId
+        in: path
+        description: Contact id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: requestId
+        in: path
+        description: Request id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: '#/components/headers/X-Requested-With'
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+          content: {}
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.X-Requested-With: '''*'''
+              method.response.header.Access-Control-Allow-Methods: '''DELETE, GET, OPTIONS, PATCH, POST'''
+              method.response.header.Access-Control-Allow-Headers: '''Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Requested-With,X-Amz-Security-Token,Access-Control-Allow-Origin'''
+              method.response.header.Access-Control-Allow-Origin: '''*'''
+        passthroughBehavior: when_no_match
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        type: mock
+components:
+  schemas:
+    RequestInitiate:
+      title: Initiate Money Request
+      type: object
+      description: Initiate Money Request
+      properties:
+        createdUserId:
+          type: string
+        businessId:
+          type: string
+        contactId:
+          type: string
+        amount:
+          type: number
+          format: float64
+        currency:
+          type: string
+        notes:
+          type: string
+          nullable: true
+    MoneyRequest:
+      title: Money Request
+      type: object
+      description: Money Request
+      properties:
+        id:
+          type: string
+        createdUserId:
+          type: string
+        businessId:
+          type: string
+        contactId:
+          type: string
+          nullable: true
+        amount:
+          type: number
+          format: float64
+        currency:
+          type: string
+        notes:
+          type: string
+          nullable: true
+        status:
+          type: string
+        messageId:
+          type: string
+        created:
+          type: string
+          description: Date created
+          example: YYYY-MM-DDTHH:MM:SSZ or YYYY-MM-DDTHH:MM:SS.SSSZ
+        modified:
+          type: string
+          description: Date modified
+          example: YYYY-MM-DDTHH:MM:SSZ or YYYY-MM-DDTHH:MM:SS.SSSZ
+  headers:
+    X-Requested-With:
+      description: CORS origin sites allowed
+      style: simple
+      explode: false
+      schema:
+        type: string
+    Access-Control-Allow-Origin:
+      description: CORS origin sites allowed
+      style: simple
+      explode: false
+      schema:
+        type: string
+    Access-Control-Allow-Methods:
+      description: CORS http methods allows
+      style: simple
+      explode: false
+      schema:
+        type: string
+    Access-Control-Allow-Headers:
+      description: CORS request headers allowed
+      style: simple
+      explode: false
+      schema:
+        type: string
+  securitySchemes:
+    WiseUsersSandboxTestingPoolAuthorizer:
+      type: apiKey
+      description: Cognito Auth Server
+      name: Authorization
+      in: header
+      x-amazon-apigateway-authtype: cognito_user_pools
+      x-amazon-apigateway-authorizer:
+        providerARNs:
+        - ${cognito_pool_arn}
+        type: cognito_user_pools

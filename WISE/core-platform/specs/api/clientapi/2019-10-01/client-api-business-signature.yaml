@@ -1,0 +1,168 @@
+openapi: 3.0.1
+
+paths:
+  /business/{businessId}/signature:
+    get:
+      tags:
+        - Business Signature
+      description: Get Business Signature
+      operationId: GetBusinessSignature
+      parameters:
+        - name: businessId
+          in: path
+          description: Business id
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: "#/components/headers/X-Requested-With"
+            Access-Control-Allow-Headers:
+              $ref: "#/components/headers/Access-Control-Allow-Headers"
+            Access-Control-Allow-Methods:
+              $ref: "#/components/headers/Access-Control-Allow-Methods"
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Signature"
+        400:
+          description: Bad Request
+          content: {}
+      security:
+        - WiseCognitoPoolAuthorizer: []
+      x-amazon-apigateway-integration:
+        passthroughBehavior: when_no_match
+        connectionType: INTERNET
+        uri: ${business_signature_lambda}
+        httpMethod: POST
+        contentHandling: CONVERT_TO_TEXT
+        type: aws_proxy
+        responses:
+          default:
+            statusCode: 200
+        responseTemplates:
+          application/json: |
+            {}
+    post:
+      tags:
+        - Business Signature
+      description: Create Signature Request
+      operationId: CreateSignatureRequest
+      parameters:
+        - name: businessId
+          in: path
+          description: Business id
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: "#/components/headers/X-Requested-With"
+            Access-Control-Allow-Headers:
+              $ref: "#/components/headers/Access-Control-Allow-Headers"
+            Access-Control-Allow-Methods:
+              $ref: "#/components/headers/Access-Control-Allow-Methods"
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Signature"
+        400:
+          description: Bad Request
+          content: {}
+      security:
+        - WiseCognitoPoolAuthorizer: []
+      x-amazon-apigateway-integration:
+        passthroughBehavior: when_no_match
+        connectionType: INTERNET
+        uri: ${business_signature_lambda}
+        httpMethod: POST
+        contentHandling: CONVERT_TO_TEXT
+        type: aws_proxy
+        responses:
+          default:
+            statusCode: 200
+        responseTemplates:
+          application/json: |
+            {}
+    options:
+      tags:
+        - Business Signature
+      operationId: OptionsBusinessSignature
+      parameters:
+        - name: businessId
+          in: path
+          description: Business id
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: 200 response
+          headers:
+            X-Requested-With:
+              $ref: '#/components/headers/X-Requested-With'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: '''DELETE, GET, OPTIONS, PATCH, POST'''
+              method.response.header.X-Requested-With: '''*'''
+              method.response.header.Access-Control-Allow-Headers: '''Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Requested-With,X-Amz-Security-Token'''
+              method.response.header.Access-Control-Allow-Origin: '''*'''
+        passthroughBehavior: when_no_match
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        type: mock
+components:
+  schemas:
+    Signature:
+      title: Signature
+      type: object
+      properties:
+        id:
+          type: string
+        businessId:
+          type: string
+        templateType:
+          type: string
+        templateProvider:
+          type: string
+        signatureRequestId:
+          type: string
+        signatureStatus:
+          type: string
+        documentId:
+          type: string
+        signURL:
+          type: string
+        created:
+          type: string
+          description: Date created
+          example: YYYY-MM-DDTHH:MM:SSZ or YYYY-MM-DDTHH:MM:SS.SSSZ
+        modified:
+          type: string
+          description: Date created
+          example: YYYY-MM-DDTHH:MM:SSZ or YYYY-MM-DDTHH:MM:SS.SSSZ

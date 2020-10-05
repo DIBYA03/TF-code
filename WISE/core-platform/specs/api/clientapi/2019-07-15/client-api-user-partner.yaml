@@ -1,0 +1,130 @@
+openapi: 3.0.1
+info:
+  title: ${api_name}
+  description: ${api_name} ${api_version}
+  version: ${api_version}
+servers:
+- url: https://${domain_name}/${api_version}
+  description: ${server_description}
+- url: https://${domain_name}/${api_stage}
+  description: ${server_description}
+paths:
+  /user/partner:
+    post:
+      tags:
+        - Partner Code Verification
+      description: Partner Code Verification
+      operationId: PartnerCodeVerification
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PartnerVerification"
+        required: true
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: "#/components/headers/X-Requested-With"
+            Access-Control-Allow-Headers:
+              $ref: "#/components/headers/Access-Control-Allow-Headers"
+            Access-Control-Allow-Methods:
+              $ref: "#/components/headers/Access-Control-Allow-Methods"
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        400:
+          description: Bad Request
+          content: {}
+      security:
+        - WiseUsersSandboxTestingPoolAuthorizer: []
+      x-amazon-apigateway-integration:
+        passthroughBehavior: when_no_match
+        connectionType: INTERNET
+        uri: ${user_partner_lambda}
+        httpMethod: POST
+        contentHandling: CONVERT_TO_TEXT
+        type: aws_proxy
+        responses:
+          default:
+            statusCode: 200
+        responseTemplates:
+          application/json: |
+            {}
+    options:
+      tags:
+        - Partner Code Verification
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: "#/components/headers/X-Requested-With"
+            Access-Control-Allow-Headers:
+              $ref: "#/components/headers/Access-Control-Allow-Headers"
+            Access-Control-Allow-Methods:
+              $ref: "#/components/headers/Access-Control-Allow-Methods"
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+          content: {}
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.X-Requested-With: "'*'"
+              method.response.header.Access-Control-Allow-Methods: '''DELETE, GET, OPTIONS, PATCH, POST'''
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Requested-With,X-Amz-Security-Token,Access-Control-Allow-Origin'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        passthroughBehavior: when_no_match
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        type: mock
+components:
+  schemas:
+    PartnerVerification:
+      title: PartnerVerification
+      type: object
+      properties:
+        code:
+          type: string
+  headers:
+    X-Requested-With:
+      description: CORS origin sites allowed
+      style: simple
+      explode: false
+      schema:
+        type: string
+    Access-Control-Allow-Origin:
+      description: CORS origin sites allowed
+      style: simple
+      explode: false
+      schema:
+        type: string
+    Access-Control-Allow-Methods:
+      description: CORS http methods allows
+      style: simple
+      explode: false
+      schema:
+        type: string
+    Access-Control-Allow-Headers:
+      description: CORS request headers allowed
+      style: simple
+      explode: false
+      schema:
+        type: string
+  securitySchemes:
+    WiseUsersSandboxTestingPoolAuthorizer:
+      type: apiKey
+      description: Cognito Auth Server
+      name: Authorization
+      in: header
+      x-amazon-apigateway-authtype: cognito_user_pools
+      x-amazon-apigateway-authorizer:
+        providerARNs:
+        - ${cognito_pool_arn}
+        type: cognito_user_pools

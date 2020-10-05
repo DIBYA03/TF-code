@@ -1,0 +1,245 @@
+openapi: 3.0.1
+
+paths:
+  /banking/business/{businessId}/account/{accountId}/statement:
+    get:
+      tags:
+      - Business Bank Account Statements
+      description: Get business bank account statements
+      operationId: GetBusinessBankAccountStatements
+      parameters:
+      - name: businessId
+        in: path
+        description: Business id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: accountId
+        in: path
+        description: Account id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BankAccountStatement'
+        400:
+          description: Bad Request
+          content: {}
+      x-amazon-apigateway-integration:
+        connectionType: INTERNET
+        contentHandling: CONVERT_TO_TEXT
+        httpMethod: POST
+        passthroughBehavior: when_no_match
+        responseTemplates:
+          application/json: |
+            {}
+        responses:
+          default:
+            statusCode: 200
+        type: aws_proxy
+        uri: ${banking_business_account_statement_list_lambda}
+      security:
+      - WiseCognitoPoolAuthorizer: []
+    options:
+      tags:
+      - Business Bank Account Statements
+      operationId: OptionsGetBusinessBankAccountStatements
+      parameters:
+      - name: businessId
+        in: path
+        description: Business id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: accountId
+        in: path
+        description: Account id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: 200 response
+          headers:
+            X-Requested-With:
+              $ref: '#/components/headers/X-Requested-With'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: '''DELETE, GET, OPTIONS, PATCH, POST'''
+              method.response.header.X-Requested-With: '''*'''
+              method.response.header.Access-Control-Allow-Headers: '''Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Requested-With,X-Amz-Security-Token'''
+              method.response.header.Access-Control-Allow-Origin: '''*'''
+        passthroughBehavior: when_no_match
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        type: mock
+  /banking/business/{businessId}/account/{accountId}/statement/{statementId}:
+    get:
+      tags:
+      - Business Bank Account Statements
+      description: Get business bank account statement
+      operationId: GetBusinessBankAccountStatement
+      parameters:
+      - name: businessId
+        in: path
+        description: Business id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: accountId
+        in: path
+        description: Business account id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: statementId
+        in: path
+        description: Business statement id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: "#/components/headers/X-Requested-With"
+            Access-Control-Allow-Headers:
+              $ref: "#/components/headers/Access-Control-Allow-Headers"
+            Access-Control-Allow-Methods:
+              $ref: "#/components/headers/Access-Control-Allow-Methods"
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+            Content-Type:
+              schema:
+                type: string
+        400:
+          description: Bad Request
+          content: {}
+      x-amazon-apigateway-integration:
+        requestTemplates:
+          application/json: "${banking_business_account_statement_request_template}"
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Content-Type: '''application/pdf'''
+              method.response.header.Access-Control-Allow-Origin: '''*'''
+            contentHandling: "CONVERT_TO_BINARY"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "POST"
+        contentHandling: "CONVERT_TO_TEXT"
+        type: "aws"
+        uri: ${banking_business_account_statement_lambda}
+      security:
+      - WiseCognitoPoolAuthorizer: []
+    options:
+      tags:
+      - Business Bank Account Statements
+      operationId: OptionsBusinessBankAccountStatement
+      parameters:
+      - name: businessId
+        in: path
+        description: User id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: accountId
+        in: path
+        description: Consumer account id number
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: statementId
+        in: path
+        description: Business statement id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: 200 response
+          headers:
+            X-Requested-With:
+              $ref: '#/components/headers/X-Requested-With'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: '''DELETE, GET, OPTIONS, PATCH, POST'''
+              method.response.header.X-Requested-With: '''*'''
+              method.response.header.Access-Control-Allow-Headers: '''Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Requested-With,X-Amz-Security-Token,X-Wise-Business-ID'''
+              method.response.header.Access-Control-Allow-Origin: '''*'''
+        passthroughBehavior: when_no_match
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        type: mock
+components:
+  schemas:
+    BankAccountStatement:
+      title: Bank account statements
+      type: object
+      properties:
+        businessId:
+          type: string
+          description: Business id
+        accountHolderId:
+          type: string
+          description: Account holder id
+        statementId:
+          type: string
+          description: Statement id
+        description:
+          type: string
+          description: Description id
+        pageCount:
+          type: integer
+          format: int32
+          description: Page count
+        created:
+          type: string
+          description: Date updated
+          example: ISO8601 date time format e.g. YYYY-MM-DDTHH:MM:SSZ or YYYY-MM-DDTHH:MM:SS.SSSZ

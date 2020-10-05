@@ -1,0 +1,1113 @@
+openapi: 3.0.1
+info:
+  title: ${api_name}
+  description: ${api_name} ${api_version}
+  version: ${api_version}
+servers:
+- url: https://${domain_name}/${api_version}
+  description: ${server_description}
+- url: https://${domain_name}/${api_stage}
+  description: ${server_description}
+paths:
+  /banking/business/{businessId}/account:
+    get:
+      tags:
+      - Business Bank Accounts
+      description: Get multiple business bank accounts
+      operationId: GetMultipleBusinessBankAccounts
+      parameters:
+      - name: businessId
+        in: path
+        description: Business id number
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: Max number of item to return
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+      - name: offset
+        in: query
+        description: Offset of items to return
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BusinessBankAccount'
+        400:
+          description: Bad Request
+          content: {}
+      x-amazon-apigateway-integration:
+        connectionType: INTERNET
+        contentHandling: CONVERT_TO_TEXT
+        httpMethod: POST
+        passthroughBehavior: when_no_match
+        responseTemplates:
+          application/json: |
+            {}
+        responses:
+          default:
+            statusCode: 200
+        type: aws_proxy
+        uri: ${banking_business_account_lambda}
+      security:
+      - WiseUsersSandboxTestingPoolAuthorizer: []
+    post:
+      tags:
+      - Business Bank Accounts
+      description: Create business bank account
+      operationId: CreateBusinessBankAccount
+      parameters:
+      - name: businessId
+        in: path
+        description: Business id number
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BusinessBankAccountPostBody'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BusinessBankAccount'
+        400:
+          description: Bad Request
+          content: {}
+      x-amazon-apigateway-integration:
+        connectionType: INTERNET
+        contentHandling: CONVERT_TO_TEXT
+        httpMethod: POST
+        passthroughBehavior: when_no_match
+        responseTemplates:
+          application/json: |
+            {}
+        responses:
+          default:
+            statusCode: 200
+        type: aws_proxy
+        uri: ${banking_business_account_lambda}
+      security:
+      - WiseUsersSandboxTestingPoolAuthorizer: []
+    options:
+      tags:
+      - Business Bank Accounts
+      parameters:
+      - name: businessId
+        in: path
+        description: Business id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              description: CORS origin sites allowed
+              style: simple
+              explode: false
+              schema:
+                type: string
+            Access-Control-Allow-Origin:
+              description: CORS origin sites allowed
+              style: simple
+              explode: false
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              description: CORS http methods allows
+              style: simple
+              explode: false
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              description: CORS request headers allowed
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content: {}
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.X-Requested-With: '''*'''
+              method.response.header.Access-Control-Allow-Methods: '''DELETE, GET, OPTIONS, PATCH, POST'''
+              method.response.header.Access-Control-Allow-Headers: '''Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Requested-With,X-Amz-Security-Token,Access-Control-Allow-Origin'''
+              method.response.header.Access-Control-Allow-Origin: '''*'''
+        passthroughBehavior: when_no_match
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        type: mock
+  /banking/business/{businessId}/account/{accountId}:
+    get:
+      tags:
+      - Business Bank Accounts
+      description: Get business bank account
+      operationId: GetBusinessBankAccount
+      parameters:
+      - name: businessId
+        in: path
+        description: Business id number
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: accountId
+        in: path
+        description: Business account id number
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BusinessBankAccount'
+        400:
+          description: Bad Request
+          content: {}
+      x-amazon-apigateway-integration:
+        connectionType: INTERNET
+        contentHandling: CONVERT_TO_TEXT
+        httpMethod: POST
+        passthroughBehavior: when_no_match
+        responseTemplates:
+          application/json: |
+            {}
+        responses:
+          default:
+            statusCode: 200
+        type: aws_proxy
+        uri: ${banking_business_account_lambda}
+      security:
+      - WiseUsersSandboxTestingPoolAuthorizer: []
+    delete:
+      tags:
+      - Business Bank Accounts
+      description: Close business bank account
+      operationId: CloseBusinessBankAccount
+      parameters:
+      - name: businessId
+        in: path
+        description: User id number
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: accountId
+        in: path
+        description: Business account id number
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content: {}
+        400:
+          description: Bad Request
+          content: {}
+      x-amazon-apigateway-integration:
+        connectionType: INTERNET
+        contentHandling: CONVERT_TO_TEXT
+        httpMethod: POST
+        passthroughBehavior: when_no_match
+        responseTemplates:
+          application/json: |
+            {}
+        responses:
+          default:
+            statusCode: 200
+        type: aws_proxy
+        uri: ${banking_business_account_lambda}
+      security:
+      - WiseUsersSandboxTestingPoolAuthorizer: []
+    options:
+      tags:
+      - Business Bank Accounts
+      parameters:
+      - name: businessId
+        in: path
+        description: User id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: accountId
+        in: path
+        description: Consumer account id number
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              description: CORS origin sites allowed
+              style: simple
+              explode: false
+              schema:
+                type: string
+            Access-Control-Allow-Origin:
+              description: CORS origin sites allowed
+              style: simple
+              explode: false
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              description: CORS http methods allows
+              style: simple
+              explode: false
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              description: CORS request headers allowed
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content: {}
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.X-Requested-With: '''*'''
+              method.response.header.Access-Control-Allow-Methods: '''DELETE, GET, OPTIONS, PATCH, POST'''
+              method.response.header.Access-Control-Allow-Headers: '''Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Requested-With,X-Amz-Security-Token,Access-Control-Allow-Origin'''
+              method.response.header.Access-Control-Allow-Origin: '''*'''
+        passthroughBehavior: when_no_match
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        type: mock
+    patch:
+      tags:
+      - Business Bank Accounts
+      description: Update business bank account
+      operationId: UpdateBusinessBankAccount
+      parameters:
+      - name: businessId
+        in: path
+        description: Business id number
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: accountId
+        in: path
+        description: Business account id number
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BusinessBankAccountPatchBody'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BusinessBankAccount'
+        400:
+          description: Bad Request
+          content: {}
+      x-amazon-apigateway-integration:
+        connectionType: INTERNET
+        contentHandling: CONVERT_TO_TEXT
+        httpMethod: POST
+        passthroughBehavior: when_no_match
+        responseTemplates:
+          application/json: |
+            {}
+        responses:
+          default:
+            statusCode: 200
+        type: aws_proxy
+        uri: ${business_lambda}
+      security:
+      - WiseUsersSandboxTestingPoolAuthorizer: []
+  /banking/business/{businessId}/account/{accountId}/balance:
+    get:
+      tags:
+      - Get Business Bank Account Balance
+      description: Get business bank account
+      operationId: GetBusinessBankAccountBalance
+      parameters:
+      - name: businessId
+        in: path
+        description: Business id number
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: accountId
+        in: path
+        description: Business account id number
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BusinessBankAccountBalance'
+        400:
+          description: Bad Request
+          content: {}
+      x-amazon-apigateway-integration:
+        connectionType: INTERNET
+        contentHandling: CONVERT_TO_TEXT
+        httpMethod: POST
+        passthroughBehavior: when_no_match
+        responseTemplates:
+          application/json: |
+            {}
+        responses:
+          default:
+            statusCode: 200
+        type: aws_proxy
+        uri: ${banking_business_account_balance_lambda}
+      security:
+      - WiseUsersSandboxTestingPoolAuthorizer: []
+    options:
+      tags:
+      - Business Bank Accounts
+      parameters:
+      - name: businessId
+        in: path
+        description: User id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: accountId
+        in: path
+        description: Consumer account id number
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              description: CORS origin sites allowed
+              style: simple
+              explode: false
+              schema:
+                type: string
+            Access-Control-Allow-Origin:
+              description: CORS origin sites allowed
+              style: simple
+              explode: false
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              description: CORS http methods allows
+              style: simple
+              explode: false
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              description: CORS request headers allowed
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content: {}
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.X-Requested-With: '''*'''
+              method.response.header.Access-Control-Allow-Methods: '''DELETE, GET, OPTIONS, PATCH, POST'''
+              method.response.header.Access-Control-Allow-Headers: '''Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Requested-With,X-Amz-Security-Token,Access-Control-Allow-Origin'''
+              method.response.header.Access-Control-Allow-Origin: '''*'''
+        passthroughBehavior: when_no_match
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        type: mock
+components:
+  schemas:
+    PartnerBankName:
+      title: PartnerBankName
+      type: string
+      description: Partner Bank Name Enum
+      enum:
+      - bbva
+    Currency:
+      title: Currency Type Enum
+      type: string
+      description: Currency Types
+      enum:
+      - usd
+    AccountType:
+      title: Account Type Enum
+      type: string
+      description: Account Types
+      enum:
+      - checking
+      - savings
+    AccountStatus:
+      title: Account Status Enum
+      type: string
+      description: Account Status Types
+      enum:
+      - active
+      - blocked
+      - locked
+      - closePending
+      - closed
+      - dormant
+      - abandoned
+      - escheated
+      - chargeOff
+    CardType:
+      title: Card type enum
+      type: string
+      description: Card types
+      enum:
+      - debit
+      - credit
+      - prepaid
+      - singleUse
+    CardStatus:
+      title: Card status enum
+      type: string
+      description: Card status types
+      enum:
+      - inactive
+      - active
+      - blocked
+      - locked
+      - canceled
+      - embossing
+      - delivery
+      - delivered
+    CardPinPostBody:
+      title: Card Pin Post Body Object
+      type: object
+      properties:
+        pin:
+          type: string
+          description: Bank card pin
+      description: Card Pin Object
+      writeOnly: true
+    BusinessBankAccount:
+      title: Business Bank Account Object
+      type: object
+      properties:
+        id:
+          type: string
+          description: Bank account id
+        partnerBankName:
+          $ref: '#/components/schemas/PartnerBankName'
+        accountHolderId:
+          type: string
+          description: Account holder user id
+        businessId:
+          type: string
+          description: Business id
+        accountType:
+          $ref: '#/components/schemas/AccountType'
+        accountStatus:
+          $ref: '#/components/schemas/AccountStatus'
+        accountNumberMasked:
+          type: string
+          description: Account number
+        routingNumber:
+          type: string
+          description: ACH routing number
+        alias:
+          type: string
+          description: Account alias
+        availableBalance:
+          type: number
+          description: Available balance
+          format: float64
+        postedBalance:
+          type: number
+          description: Posted balance
+          format: float64
+        currency:
+          $ref: '#/components/schemas/Currency'
+        opened:
+          type: string
+          description: Date opened
+          example: ISO8601 date time format e.g. YYYY-MM-DDTHH:MM:SSZ or YYYY-MM-DDTHH:MM:SS.SSSZ
+        created:
+          type: string
+          description: Date created
+          example: ISO8601 date time format e.g. YYYY-MM-DDTHH:MM:SSZ or YYYY-MM-DDTHH:MM:SS.SSSZ
+        modified:
+          type: string
+          description: Date modified
+          example: ISO8601 date time format e.g. YYYY-MM-DDTHH:MM:SSZ or YYYY-MM-DDTHH:MM:SS.SSSZ
+      description: Business Bank Account Object
+      readOnly: true
+    BusinessBankAccountPostBody:
+      title: Business Bank Account Post Body Object
+      type: object
+      properties:
+        accountType:
+          $ref: '#/components/schemas/AccountType'
+        alias:
+          type: string
+          description: Account alias
+        currency:
+          $ref: '#/components/schemas/Currency'
+      description: Business Bank Account Post Body Object
+      writeOnly: true
+    BusinessBankAccountPatchBody:
+      title: Business Bank Account Patch Body Object
+      type: object
+      properties:
+        alias:
+          type: string
+          description: Account alias
+      description: Business Bank Account Patch Body Object
+      writeOnly: true
+    BusinessBankAccountBalance:
+      title: Business Bank Account Balance Object
+      type: object
+      description: Business Bank Account Balance Object
+      readOnly: true
+      properties:
+        accountId:
+          type: string
+          description: Bank account id
+        availableBalance:
+          type: number
+          description: Available balance
+          format: float64
+        postedBalance:
+          type: number
+          description: Posted balance
+          format: float64
+        currency:
+          $ref: '#/components/schemas/Currency'
+        modified:
+          type: string
+          description: Date modified
+          example: ISO8601 date time format e.g. YYYY-MM-DDTHH:MM:SSZ or YYYY-MM-DDTHH:MM:SS.SSSZ
+    BusinessBankCard:
+      title: Business Card Account Object
+      type: object
+      properties:
+        id:
+          type: string
+          description: Bank account id
+        partnerBankName:
+          $ref: '#/components/schemas/PartnerBankName'
+        cardholderId:
+          type: string
+          description: Cardholder user id
+        businessId:
+          type: string
+          description: Business id
+        employeeId:
+          type: string
+          description: Employee id
+          nullable: true
+        accountId:
+          type: string
+          description: Bank account id
+          nullable: true
+        cardType:
+          $ref: '#/components/schemas/CardType'
+        isVirtual:
+          type: boolean
+          description: Is card virtual
+        cardStatus:
+          $ref: '#/components/schemas/CardStatus'
+        alias:
+          type: string
+          description: Account alias
+          nullable: true
+        cardholderName:
+          type: string
+          description: Card holder name
+        cardNumberMasked:
+          type: string
+          description: Card number
+          nullable: true
+        dailyLimit:
+          type: number
+          format: float64
+          nullable: true
+        dailyPending:
+          type: number
+          format: float64
+          nullable: true
+        dailyPosted:
+          type: number
+          format: float64
+          nullable: true
+        currency:
+          $ref: '#/components/schemas/Currency'
+        opened:
+          type: string
+          description: Date opened
+          example: ISO8601 date time format e.g. YYYY-MM-DDTHH:MM:SSZ or YYYY-MM-DDTHH:MM:SS.SSSZ
+        created:
+          type: string
+          description: Date created
+          example: ISO8601 date time format e.g. YYYY-MM-DDTHH:MM:SSZ or YYYY-MM-DDTHH:MM:SS.SSSZ
+        modified:
+          type: string
+          description: Date modified
+          example: ISO8601 date time format e.g. YYYY-MM-DDTHH:MM:SSZ or YYYY-MM-DDTHH:MM:SS.SSSZ
+      description: Business Card Account Object
+      readOnly: true
+    BusinessBankCardPatchBody:
+      title: Business Bank Card Patch Body Object
+      type: object
+      properties:
+        alias:
+          type: string
+          description: Card alias
+      description: Business Card Account Patch Body Object
+      writeOnly: true
+    BusinessBankCardPostBody:
+      title: BusinessBankCardPostBody
+      type: object
+      properties:
+        employeeId:
+          type: string
+          description: Employee Id
+        alias:
+          type: string
+          description: Card alias
+      description: Business Card Account Patch Body Object
+      writeOnly: true
+    TransactionAccountType:
+      title: TransactionAccountType
+      type: string
+      description: Transaction source/dest account types enum
+      enum:
+      - account
+      - card
+    TransactionType:
+      title: TransactionType
+      type: string
+      description: Transaction types enum
+      enum:
+      - purchase
+      - transferCredit
+      - transferDebit
+      - cashDebit
+      - cashCredit
+      - refund
+      - misc
+    TransactionCodeType:
+      title: Transaction code type types
+      type: string
+      description: Transaction code type enum
+      enum:
+      - statusChange
+      - authApproved
+      - authDeclined
+      - holdApproved
+      - holdReleased
+      - debitPosted
+      - transferChange
+    TransactionNetworkType:
+      title: TransactionNetworkType
+      type: string
+      description: Transaction network type enum
+      enum:
+      - wise
+      - ach
+      - visa
+      - mc
+      - amex
+      - plus
+    CardHoldTransaction:
+      title: CardTransaction
+      type: object
+      properties:
+        holdAmount:
+          type: string
+          description: Hold amount
+          nullable: true
+        holdDate:
+          type: string
+          description: Hold date
+          nullable: true
+          example: ISO8601 date time format e.g. YYYY-MM-DDTHH:MM:SSZ or YYYY-MM-DDTHH:MM:SS.SSSZ
+        holdExpiryDate:
+          type: string
+          description: Hold expiry date
+          nullable: true
+          example: ISO8601 date time format e.g. YYYY-MM-DDTHH:MM:SSZ or YYYY-MM-DDTHH:MM:SS.SSSZ
+      description: Card hold transaction details
+      readOnly: true
+    CardTransaction:
+      title: CardTransaction
+      type: object
+      properties:
+        authAmount:
+          type: string
+          description: Auth amount
+          nullable: true
+        authDate:
+          type: string
+          description: Auth date
+          nullable: true
+          example: ISO8601 date time format e.g. YYYY-MM-DDTHH:MM:SSZ or YYYY-MM-DDTHH:MM:SS.SSSZ
+        authResponseCode:
+          type: string
+          description: Auth response code
+          nullable: true
+        authNumber:
+          type: string
+          description: Auth number
+          nullable: true
+        transactionCode:
+          type: string
+          description: Transaction code
+          nullable: true
+        localAmount:
+          type: string
+          description: Local amount
+          nullable: true
+        localCurrency:
+          type: string
+          description: Local Currency
+          nullable: true
+        localDate:
+          type: string
+          description: Local date
+          nullable: true
+          example: ISO8601 date time format e.g. YYYY-MM-DDTHH:MM:SSZ or YYYY-MM-DDTHH:MM:SS.SSSZ
+        posEntryMode:
+          type: string
+          description: Point of sale entry mode
+          nullable: true
+        posConditionCode:
+          type: string
+          description: Point of sale condition code
+          nullable: true
+        acquirerBankIdNumber:
+          type: string
+          description: Acquirer BIN
+          nullable: true
+        merchantId:
+          type: string
+          description: Merchant id
+          nullable: true
+        merchantCategoryCode:
+          type: string
+          description: Merchant category code
+          nullable: true
+        merchantTerminal:
+          type: string
+          description: Merchant terminal
+          nullable: true
+        merchantName:
+          type: string
+          description: Merchant name
+          nullable: true
+        merchantStreetAddress:
+          type: string
+          description: Merchant street address
+          nullable: true
+        merchantCity:
+          type: string
+          description: Merchant city
+          nullable: true
+        merchantState:
+          type: string
+          description: Merchant state
+          nullable: true
+        merchantCountry:
+          type: string
+          description: Merchant country
+          nullable: true
+      description: Card transaction details
+      readOnly: true
+    Transaction:
+      title: Transaction
+      type: object
+      properties:
+        id:
+          type: string
+          description: Transaction id
+        consumerId:
+          type: string
+          description: Consumer user id
+          nullable: true
+        businessId:
+          type: string
+          description: Business id
+          nullable: true
+        partnerBankName:
+          $ref: '#/components/schemas/PartnerBankName'
+        transactionType:
+          $ref: '#/components/schemas/TransactionType'
+        sourceAccountId:
+          type: string
+          description: Bank account id
+          nullable: true
+        sourceAccountType:
+          $ref: '#/components/schemas/TransactionAccountType'
+        destAccountId:
+          type: string
+          description: Bank account id
+          nullable: true
+        destAccountType:
+          $ref: '#/components/schemas/TransactionAccountType'
+        codeType:
+          $ref: '#/components/schemas/TransactionCodeType'
+        networkType:
+          $ref: '#/components/schemas/TransactionNetworkType'
+        networkId:
+          type: string
+          description: Interchange network transaction id
+        amount:
+          type: number
+          description: Transaction amount
+          format: float64
+        currency:
+          $ref: '#/components/schemas/Currency'
+        cardDetails:
+          anyOf:
+          - $ref: '#/components/schemas/CardTransaction'
+          - nullable: true
+        cardHold:
+          anyOf:
+          - $ref: '#/components/schemas/CardHoldTransaction'
+          - nullable: true
+        moneyTransferId:
+          type: string
+          description: Related transfer id
+          nullable: true
+        moneyTransferDesc:
+          type: string
+          description: Description of transfer
+          nullable: true
+        transactionCreatedDate:
+          type: string
+          description: Date created
+          example: ISO8601 date time format e.g. YYYY-MM-DDTHH:MM:SSZ or YYYY-MM-DDTHH:MM:SS.SSSZ
+        transactionModifiedDate:
+          type: string
+          description: Date modified
+          example: ISO8601 date time format e.g. YYYY-MM-DDTHH:MM:SSZ or YYYY-MM-DDTHH:MM:SS.SSSZ
+        created:
+          type: string
+          description: Date created
+          example: ISO8601 date time format e.g. YYYY-MM-DDTHH:MM:SSZ or YYYY-MM-DDTHH:MM:SS.SSSZ
+      description: Bank transaction
+      readOnly: true
+    MoneyTransferRailType:
+      title: MoneyTransferRailType
+      type: string
+      description: Money transfer rail type enum
+      enum:
+      - wise
+      - debit
+      - ach
+      - wire
+      - remit
+    MoneyTransferType:
+      title: MoneyTransferType
+      type: string
+      description: Money transfer type enum
+      enum:
+      - business
+      - payroll
+      - tax
+      - employee
+    MoneyTransferAccountType:
+      title: MoneyTransferAccountType
+      type: string
+      description: Money transfer account types enum
+      enum:
+      - checking
+      - savings
+      - debit
+    MoneyTransferStatus:
+      title: MoneyTransferStatus
+      type: string
+      description: Money transfer status enum
+      enum:
+      - pending
+      - inProcess
+      - canceled
+      - posted
+      - settled
+      - debitSent
+      - creditSent
+      - reviewResolved
+      - pullFailed
+      - pullRefunded
+      - pullReview
+      - pushRefunded
+      - pushReview
+    BusinessMoneyTransfer:
+      title: BusinessMoneyTransfer
+      type: object
+      properties:
+        id:
+          type: string
+          description: Transfer id
+        createdUserId:
+          type: string
+          description: User id who created transfer
+        partnerBankName:
+          $ref: '#/components/schemas/PartnerBankName'
+        businessId:
+          type: string
+          description: Business id
+        employeeId:
+          type: string
+          description: Employee id
+          nullable: true
+        sourceAccountId:
+          type: string
+          description: Source account id
+        sourceAccountType:
+          $ref: '#/components/schemas/MoneyTransferAccountType'
+        destAccountId:
+          type: string
+          description: Destination account id
+          nullable: true
+        destAccountType:
+          $ref: '#/components/schemas/MoneyTransferAccountType'
+        amount:
+          type: number
+          description: Business id
+          format: float64
+        currency:
+          $ref: '#/components/schemas/Currency'
+        transferType:
+          $ref: '#/components/schemas/MoneyTransferType'
+        railType:
+          $ref: '#/components/schemas/MoneyTransferRailType'
+        status:
+          $ref: '#/components/schemas/MoneyTransferStatus'
+        transactions:
+          type: array
+          description: Related transactions
+          items:
+            $ref: '#/components/schemas/Transaction'
+        created:
+          type: string
+          description: Date created
+          example: ISO8601 date time format e.g. YYYY-MM-DDTHH:MM:SSZ or YYYY-MM-DDTHH:MM:SS.SSSZ
+        modified:
+          type: string
+          description: Date modified
+          example: ISO8601 date time format e.g. YYYY-MM-DDTHH:MM:SSZ or YYYY-MM-DDTHH:MM:SS.SSSZ
+      description: Business money transfer
+      readOnly: true
+    BusinessMoneyTransferPostBody:
+      title: BusinessMoneyTransferPostBody
+      required:
+      - amount
+      - currency
+      - destAccountId
+      - destAccountType
+      - railType
+      - sourceAccountId
+      - sourceAccountType
+      - transferType
+      type: object
+      properties:
+        employeeId:
+          type: string
+          description: Employee id
+          nullable: true
+        sourceAccountId:
+          type: string
+          description: Source account id
+        sourceAccountType:
+          $ref: '#/components/schemas/MoneyTransferAccountType'
+        destAccountId:
+          type: string
+          description: Destination account id
+          nullable: true
+        destAccountType:
+          $ref: '#/components/schemas/MoneyTransferAccountType'
+        amount:
+          type: number
+          description: Business id
+          format: float64
+        currency:
+          $ref: '#/components/schemas/Currency'
+        railType:
+          $ref: '#/components/schemas/MoneyTransferRailType'
+        transferType:
+          $ref: '#/components/schemas/MoneyTransferType'
+      description: Business money transfer post body
+      writeOnly: true
+  securitySchemes:
+    WiseUsersSandboxTestingPoolAuthorizer:
+      type: apiKey
+      description: Cognito Auth Server
+      name: Authorization
+      in: header
+      x-amazon-apigateway-authtype: cognito_user_pools
+      x-amazon-apigateway-authorizer:
+        providerARNs:
+        - ${cognito_pool_arn}
+        type: cognito_user_pools

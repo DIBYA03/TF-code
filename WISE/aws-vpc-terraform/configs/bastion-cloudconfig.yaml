@@ -1,0 +1,50 @@
+#cloud-config
+repo_update: true
+repo_upgrade: all
+
+write_files:
+  - path: /etc/salt/minion
+    owner: root
+    permissions: 0644
+    content: |
+      file_client: local
+
+      file_roots:
+        base:
+          - /srv/salt
+          - /srv/formulas/jenkins-formula
+
+      # This will prevent salt from applying by accident.
+      # Will have to explicity states test=false on run.
+      test: true
+
+  - path: /etc/salt/update_salt.sh
+    owner: root
+    permissions: 0755
+    content: |
+      #!/bin/bash
+
+      rm -f /etc/saltstack.zip
+      rm -rf /srv/{forumulas,pillar,salt}
+
+      aws s3 cp s3://${s3_bucket}/${s3_saltstack_prefix}/${s3_saltstack_filename} /etc/salt
+      unzip -o /etc/salt/${s3_saltstack_filename} -d /srv
+
+  - path: /etc/salt/exec_salt.sh
+    owner: root
+    permissions: 0755
+    content: |
+      #!/bin/bash
+
+      export EFS_DNS_NAME="${bastion_host_efs_hostname}"
+      export BASTION_HOSTNAME="${bastion_hostname}"
+
+      # Run saltstack
+      salt-call --local state.apply test=false
+
+runcmd:
+  - 'apt-get update && apt-get upgrade -y'
+  - 'curl -s "https://bootstrap.saltstack.com/stable/bootstrap-salt.sh" | /bin/bash'
+  - 'apt-get install -y awscli zip'
+  - '/bin/bash /etc/salt/update_salt.sh'
+  - '/bin/bash /etc/salt/exec_salt.sh'

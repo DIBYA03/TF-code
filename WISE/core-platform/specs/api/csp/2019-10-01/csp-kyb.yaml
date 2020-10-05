@@ -1,0 +1,115 @@
+openapi: 3.0.1
+info:
+  title: ${api_name}
+  description: ${api_name} ${api_version}
+  version: ${api_version}
+servers:
+  - url: https://${domain_name}/${api_version}
+    description: ${server_description}
+  - url: https://${domain_name}/${api_stage}
+    description: ${server_description}
+paths:
+  /kyb:
+    post:
+      tags:
+        - Business KYB
+      description: Run Business KYB
+      operationId: PostBusinessKYB
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BusinessKYBPOST"
+        required: true
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: "#/components/headers/X-Requested-With"
+            Access-Control-Allow-Headers:
+              $ref: "#/components/headers/Access-Control-Allow-Headers"
+            Access-Control-Allow-Methods:
+              $ref: "#/components/headers/Access-Control-Allow-Methods"
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KYBResult"
+        400:
+          description: Bad Request
+          content: {}
+      x-amazon-apigateway-integration:
+        passthroughBehavior: when_no_match
+        connectionType: INTERNET
+        uri: ${csp_kyb_lambda}
+        httpMethod: POST
+        contentHandling: CONVERT_TO_TEXT
+        type: aws_proxy
+        responses:
+          default:
+            statusCode: 200
+        responseTemplates:
+          application/json: |
+            {}
+      security:
+        - WiseCSPCognitoPoolAuthorizer: []
+    options:
+      tags:
+        - Business KYB
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: "#/components/headers/X-Requested-With"
+            Access-Control-Allow-Headers:
+              $ref: "#/components/headers/Access-Control-Allow-Headers"
+            Access-Control-Allow-Methods:
+              $ref: "#/components/headers/Access-Control-Allow-Methods"
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+          content: {}
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.X-Requested-With: "'*'"
+              method.response.header.Access-Control-Allow-Methods: "'*'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Requested-With,X-Amz-Security-Token,Access-Control-Allow-Origin'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        passthroughBehavior: when_no_match
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        type: mock
+components:
+  schemas:
+    BusinessKYBPOST:
+      title: BusinessKYBPOST
+      type: object
+      properties:
+        tin:
+          type: string
+    KYBResult:
+      title: KYBResult
+      type: object
+      properties:
+        wiseScore:
+          type: number
+          format: float64
+        summary:
+          $ref: "#/components/schemas/KYBSummary"
+    KYBSummary:
+      title: KYBSummary
+      type: object
+      properties:
+        address:
+          type: string
+        tin:
+          type: string
+        registration:
+          type: string
+        watchlist:
+          type: string

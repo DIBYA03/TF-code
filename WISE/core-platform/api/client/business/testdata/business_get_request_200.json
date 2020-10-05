@@ -1,0 +1,24 @@
+{
+  "resourcePath": "/business/b5de56d3-68af-4b84-82a4-96902dacdd58",
+  "httpMethod": "GET",
+  "headers": {
+    "Accept": "application/json"
+  },
+  "multiValueHeaders": {},
+  "queryStringParameters": {},
+  "multiValueQueryStringParameters": {},
+  "pathParameters": {
+    "businessId": "b5de56d3-68af-4b84-82a4-96902dacdd58"
+  },
+  "envVariables": {},
+  "body": "",
+  "isBase64Encoded": false,
+  "envId": "dev",
+  "requestId": "test-invoke-request",
+  "apiId": "r275xc9bmd",
+  "apiKey": "test-invoke-api-key",
+  "sourceIp": "127.0.0.1",
+  "userAgent": "Go 1.x Wise Test Client",
+  "userId": "60d2255f-1aaa-4a7e-8005-8a92f741f151",
+  "startedAt": "2019-03-01T00:00:00.000Z"
+}

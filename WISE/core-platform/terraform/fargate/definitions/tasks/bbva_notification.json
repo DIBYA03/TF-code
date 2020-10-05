@@ -1,0 +1,136 @@
+[
+  {
+    "name": "${name}",
+    "image": "${ecr_image}:${ecr_image_tag}",
+    "essential": true,
+    "cpu": ${fargate_cpu
+    },
+    "memory": ${fargate_memory
+    },
+    "networkMode": "awsvpc",
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "/ecs/${aws_log_group}",
+        "awslogs-region": "${aws_region}",
+        "awslogs-stream-prefix": "${name}"
+      }
+    },
+    "environment": [
+      {
+        "name": "API_ENV",
+        "value": "${api_env}"
+      },
+      {
+        "name": "KINESIS_BANK_NOTIF_NAME",
+        "value": "${kinesis_bank_notif_name}"
+      },
+      {
+        "name": "KINESIS_BANK_NOTIF_REGION",
+        "value": "${kinesis_bank_notif_region}"
+      },
+      {
+        "name": "SQS_BANKING_REGION",
+        "value": "${sqs_banking_region}"
+      },
+      {
+        "name": "SQS_BANKING_URL",
+        "value": "${sqs_banking_url}"
+      },
+      {
+        "name": "SQS_BBVA_ENV_REGION",
+        "value": "${sqs_bbva_region}"
+      },
+      {
+        "name": "SQS_BBVA_ENV_URL",
+        "value": "${sqs_bbva_url}"
+      },
+      {
+        "name": "GRPC_SERVICE_PORT",
+        "value": "${grpc_port}"
+      },
+      {
+        "name": "USE_TRANSACTION_SERVICE",
+        "value": "${use_transaction_service}"
+      },
+      {
+        "name": "USE_BANKING_SERVICE",
+        "value": "${use_banking_service}"
+      }
+    ],
+    "secrets": [
+      {
+        "name": "BBVA_APP_ENV",
+        "valueFrom": "${bbva_app_env}"
+      },
+      {
+        "name": "BBVA_APP_ID",
+        "valueFrom": "${bbva_app_id}"
+      },
+      {
+        "name": "BBVA_APP_NAME",
+        "valueFrom": "${bbva_app_name}"
+      },
+      {
+        "name": "BBVA_APP_SECRET",
+        "valueFrom": "${bbva_app_secret}"
+      },
+      {
+        "name": "CORE_DB_WRITE_URL",
+        "valueFrom": "${core_db_write_url}"
+      },
+      {
+        "name": "CORE_DB_READ_URL",
+        "valueFrom": "${core_db_read_url}"
+      },
+      {
+        "name": "CORE_DB_WRITE_PORT",
+        "valueFrom": "${core_db_write_port}"
+      },
+      {
+        "name": "CORE_DB_READ_PORT",
+        "valueFrom": "${core_db_read_port}"
+      },
+      {
+        "name": "CORE_DB_NAME",
+        "valueFrom": "${core_db_name}"
+      },
+      {
+        "name": "CORE_DB_USER",
+        "valueFrom": "${core_db_user}"
+      },
+      {
+        "name": "CORE_DB_PASSWD",
+        "valueFrom": "${core_db_passwd}"
+      },
+      {
+        "name": "BANK_DB_WRITE_URL",
+        "valueFrom": "${bank_db_write_url}"
+      },
+      {
+        "name": "BANK_DB_READ_URL",
+        "valueFrom": "${bank_db_read_url}"
+      },
+      {
+        "name": "BANK_DB_WRITE_PORT",
+        "valueFrom": "${bank_db_write_port}"
+      },
+      {
+        "name": "BANK_DB_READ_PORT",
+        "valueFrom": "${bank_db_read_port}"
+      },
+      {
+        "name": "BANK_DB_NAME",
+        "valueFrom": "${bank_db_name}"
+      },
+      {
+        "name": "BANK_DB_USER",
+        "valueFrom": "${bank_db_user}"
+      },
+      {
+        "name": "BANK_DB_PASSWD",
+        "valueFrom": "${bank_db_passwd}"
+      }
+    ]
+  }
+]

@@ -1,0 +1,114 @@
+openapi: 3.0.1
+info:
+  title: ${api_name}
+  description: ${api_name} ${api_version}
+  version: ${api_version}
+servers:
+  - url: https://${domain_name}/${api_version}
+    description: ${server_description}
+  - url: https://${domain_name}/${api_stage}
+    description: ${server_description}
+paths:
+  /kyc:
+    post:
+      tags:
+        - Consumer KYC
+      description: Run Consumer KYC
+      operationId: PostConsumerKYC
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ConsumerKYCPOST"
+        required: true
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: "#/components/headers/X-Requested-With"
+            Access-Control-Allow-Headers:
+              $ref: "#/components/headers/Access-Control-Allow-Headers"
+            Access-Control-Allow-Methods:
+              $ref: "#/components/headers/Access-Control-Allow-Methods"
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KYCResult"
+        400:
+          description: Bad Request
+          content: {}
+      x-amazon-apigateway-integration:
+        passthroughBehavior: when_no_match
+        connectionType: INTERNET
+        uri: ${csp_kyc_lambda}
+        httpMethod: POST
+        contentHandling: CONVERT_TO_TEXT
+        type: aws_proxy
+        responses:
+          default:
+            statusCode: 200
+        responseTemplates:
+          application/json: |
+            {}
+      security:
+        - WiseCSPCognitoPoolAuthorizer: []
+    options:
+      tags:
+        - Consumer KYC
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: "#/components/headers/X-Requested-With"
+            Access-Control-Allow-Headers:
+              $ref: "#/components/headers/Access-Control-Allow-Headers"
+            Access-Control-Allow-Methods:
+              $ref: "#/components/headers/Access-Control-Allow-Methods"
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+          content: {}
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.X-Requested-With: "'*'"
+              method.response.header.Access-Control-Allow-Methods: "'*'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Requested-With,X-Amz-Security-Token,Access-Control-Allow-Origin'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        passthroughBehavior: when_no_match
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        type: mock
+components:
+  schemas:
+    ConsumerKYCPOST:
+      title: ConsumerKYCPOST
+      type: object
+      properties:
+        ssn:
+          type: string
+    KYCResult:
+      title: KYCResult
+      type: object
+      properties:
+        result:
+          type: string
+        summary:
+          $ref: "#/components/schemas/KYCSummary"
+    KYCSummary:
+      title: KYCSummary
+      type: object
+      properties:
+        bankKYC:
+          type: string
+        alloyKYC:
+          type: string
+        phoneVerification:
+          type: string
+        emailVerification:
+          type: string

@@ -1,0 +1,37 @@
+[
+  {
+    "name": "${name}",
+    "image": "${ecr_image}:${ecr_image_tag}",
+    "essential": true,
+    "cpu": ${fargate_cpu},
+    "memory": ${fargate_memory},
+    "networkMode": "awsvpc",
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "/ecs/${aws_log_group}",
+        "awslogs-region": "${aws_region}",
+        "awslogs-stream-prefix": "${name}"
+      }
+    },
+    "environment": [
+      {
+        "name": "SNS_BBVA_ARN",
+        "value": "${sns_bbva_arn}"
+      },
+      {
+        "name": "SNS_BBVA_REGION",
+        "value": "${sns_bbva_region}"
+      },
+      {
+        "name": "SQA_BBVA_REGION",
+        "value": "${sqs_bbva_region}"
+      },
+      {
+        "name": "SQS_BBVA_URL",
+        "value": "${sqs_bbva_url}"
+      }
+    ],
+    "secrets": []
+  }
+]

@@ -1,0 +1,19 @@
+-- +goose Up
+ALTER TABLE business ALTER COLUMN entity_type DROP NOT NULL;
+ALTER TABLE business ALTER COLUMN entity_type SET DEFAULT NULL;
+
+ALTER TABLE business ALTER COLUMN industry_type DROP NOT NULL;
+ALTER TABLE business ALTER COLUMN industry_type SET DEFAULT NULL;
+
+ALTER TABLE business ALTER COLUMN purpose DROP NOT NULL;
+ALTER TABLE business ALTER COLUMN purpose SET DEFAULT NULL;
+
+-- +goose Down
+ALTER TABLE business ALTER COLUMN purpose DROP DEFAULT;
+ALTER TABLE business ALTER COLUMN purpose SET NOT NULL;
+
+ALTER TABLE business ALTER COLUMN industry_type DROP DEFAULT;
+ALTER TABLE business ALTER COLUMN industry_type SET NOT NULL;
+
+ALTER TABLE business ALTER COLUMN entity_type DROP DEFAULT;
+ALTER TABLE business ALTER COLUMN entity_type SET NOT NULL;

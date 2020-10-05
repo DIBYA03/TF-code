@@ -1,0 +1,41 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-demo
+  namespace: kube-system
+spec:
+  acme:
+    # The ACME server URL
+    server: https://acme-v02.api.letsencrypt.org/directory
+    # Email address used for ACME registration
+    email: richard@wise.us
+    solvers:
+
+    # this solver uses ambient credentials (i.e. inferred from the environment or EC2 Metadata Service)
+    # to assume a role in a different account
+    - selector:
+        dnsZones:
+          - "sbx.wise.us"
+      dns01:
+        route53:
+          region: us-west-2
+          hostedZoneID: Z012546835WJXIVSZ6EKM # optional, see policy above
+          #     role: arn:aws:iam::YYYYYYYYYYYY:role/dns-manager
+
+
+
+    # Name of a secret used to store the ACME account private key
+    privateKeySecretRef:
+      name: letsencrypt-demo
+
+      ## Depricated in certamanager.k8s.io/v1alpha1 api version 
+      #dns01:
+      # Here we define a list of DNS-01 providers that can solve DNS challenges
+      #providers:
+      #- name: sbx.wise.us
+      #  route53:
+      #    accessKeyID: <not required if node has permission> 
+      #    region: us-west-2
+      #    secretAccessKeySecretRef:
+      #      name: prod-route53-credentials-secret
+      #      key: secret-access-key

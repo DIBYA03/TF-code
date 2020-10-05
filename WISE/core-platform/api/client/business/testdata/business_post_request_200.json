@@ -1,0 +1,23 @@
+{
+  "resourcePath": "/business/ad1a78fe-a4ef-4eb3-a9cf-d7bc64146168",
+  "httpMethod": "PATCH",
+  "headers": {
+    "Accept": "application/json"
+  },
+  "multiValueHeaders": {},
+  "queryStringParameters": {},
+  "multiValueQueryStringParameters": {},
+  "pathParameters": {
+    "businessId": "ad1a78fe-a4ef-4eb3-a9cf-d7bc64146168"
+  },
+  "envVariables": {},
+  "body": "{\r\n\"employerNumber\":\"656546\",\r\n\"legalName\":\"Example Company\",\r\n\"entityType\":\"limitedLiabilityCompany\",\r\n\"isPublicEntity\":false,\r\n\"industryType\":\"hotelMotel\",\r\n\"purpose\":\"payroll\",\r\n\"isRestricted\": false,\r\n\"handlesCash\":false,\r\n\"taxIdMasked\":\"11-2923847\",\r\n\"taxIdType\":\"ein\"\r\n}",
+  "envId": "dev",
+  "requestId": "test-invoke-request",
+  "apiId": "r275xc9bmd",
+  "apiKey": "test-invoke-api-key",
+  "sourceIp": "127.0.0.1",
+  "userAgent": "Go 1.x Wise Test Client",
+  "userId": "60d2255f-1aaa-4a7e-8005-8a92f741f151",
+  "startedAt": "2019-03-01T00:00:00.000Z"
+}

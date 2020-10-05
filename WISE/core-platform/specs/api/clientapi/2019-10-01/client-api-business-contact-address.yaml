@@ -1,0 +1,405 @@
+openapi: 3.0.1
+
+paths:
+  /business/contact/{contactId}/address:
+    get:
+      tags:
+        - Business Contact Address
+      description: Get Contact Addresses by id
+      operationId: GetContactAddress
+      parameters:
+        - name: contactId
+          in: path
+          description: Contact id
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContactAddress"
+        400:
+          description: Bad Request
+          content: {}
+      security:
+        - WiseCognitoPoolAuthorizer: []
+      x-amazon-apigateway-integration:
+        passthroughBehavior: when_no_match
+        connectionType: INTERNET
+        uri: ${business_contact_address_lambda}
+        httpMethod: POST
+        contentHandling: CONVERT_TO_TEXT
+        type: aws_proxy
+        responses:
+          default:
+            statusCode: 200
+        responseTemplates:
+          application/json: |
+            {}
+    post:
+      tags:
+        - Business Contact Address
+      description: Create an Address for a Contact
+      operationId: CreateContactAddress
+      parameters:
+        - name: contactId
+          in: path
+          description: Contact id
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ContactAddressPostBody"
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContactAddress"
+        400:
+          description: Bad Request
+          content: {}
+      security:
+        - WiseCognitoPoolAuthorizer: []
+      x-amazon-apigateway-integration:
+        connectionType: INTERNET
+        uri: ${business_contact_address_lambda}
+        httpMethod: POST
+        contentHandling: CONVERT_TO_TEXT
+        type: aws_proxy
+        responses:
+          default:
+            statusCode: 200
+        passthroughBehavior: when_no_match
+        responseTemplates:
+          application/json: |
+            {}
+    options:
+      tags:
+      - Business Contact Address
+      parameters:
+        - name: contactId
+          in: path
+          description: Contact id
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              description: CORS origin sites allowed
+              style: simple
+              explode: false
+              schema:
+                type: string
+            Access-Control-Allow-Origin:
+              description: CORS origin sites allowed
+              style: simple
+              explode: false
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              description: CORS http methods allows
+              style: simple
+              explode: false
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              description: CORS request headers allowed
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content: {}
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.X-Requested-With: '''*'''
+              method.response.header.Access-Control-Allow-Methods: '''DELETE, GET, OPTIONS, PATCH, POST'''
+              method.response.header.Access-Control-Allow-Headers: '''Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Wise-Business-ID'''
+              method.response.header.Access-Control-Allow-Origin: '''*'''
+        passthroughBehavior: when_no_match
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        type: mock
+  /business/contact/{contactId}/address/{addressId}:
+    patch:
+      tags:
+        - Business Contact Address
+      description: Update a contact address by id
+      operationId: UpdateContactAddress
+      parameters:
+        - name: contactId
+          in: path
+          description: Contact id
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: addressId
+          in: path
+          description: Address id
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json, application/json-patch+json:
+            schema:
+              $ref: "#/components/schemas/ContactAddressPatchBody"
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContactAddress"
+        400:
+          description: Bad Request
+          content: {}
+      security:
+        - WiseCognitoPoolAuthorizer: []
+      x-amazon-apigateway-integration:
+        passthroughBehavior: when_no_match
+        connectionType: INTERNET
+        uri: ${business_contact_address_lambda}
+        httpMethod: POST
+        contentHandling: CONVERT_TO_TEXT
+        type: aws_proxy
+        responses:
+          default:
+            statusCode: 200
+        responseTemplates:
+          application/json: |
+            {}
+    delete:
+      tags:
+        - Business Contact Address
+      description: Delete Contact Address by id
+      operationId: DeleteContactAddress
+      parameters:
+        - name: contactId
+          in: path
+          description: Contact id
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: addressId
+          in: path
+          description: Address id
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          content: {}
+        400:
+          description: Bad Request
+          content: {}
+      security:
+        - WiseCognitoPoolAuthorizer: []
+      x-amazon-apigateway-integration:
+        passthroughBehavior: when_no_match
+        connectionType: INTERNET
+        uri: ${business_contact_address_lambda}
+        httpMethod: POST
+        contentHandling: CONVERT_TO_TEXT
+        type: aws_proxy
+        responses:
+          default:
+            statusCode: 200
+        responseTemplates:
+          application/json: |
+            {}
+    options:
+      tags:
+      - Business Contact Address
+      parameters:
+        - name: contactId
+          in: path
+          description: Contact id
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: addressId
+          in: path
+          description: Address id
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              description: CORS origin sites allowed
+              style: simple
+              explode: false
+              schema:
+                type: string
+            Access-Control-Allow-Origin:
+              description: CORS origin sites allowed
+              style: simple
+              explode: false
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              description: CORS http methods allows
+              style: simple
+              explode: false
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              description: CORS request headers allowed
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content: {}
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.X-Requested-With: '''*'''
+              method.response.header.Access-Control-Allow-Methods: '''DELETE, GET, OPTIONS, PATCH, POST'''
+              method.response.header.Access-Control-Allow-Headers: '''Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Requested-With,X-Amz-Security-Token,X-Wise-Business-ID'''
+              method.response.header.Access-Control-Allow-Origin: '''*'''
+        passthroughBehavior: when_no_match
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        type: mock
+components:
+  schemas:
+    AddressType:
+      title: AddressType
+      type: string
+      description: Address  Enum
+      enum:
+        - legal
+        - mailing
+        - shipping
+    ContactAddress:
+      title: Address
+      type: object
+      properties:
+        id:
+          type: string
+        addressType:
+          $ref: "#/components/schemas/AddressType"
+        streetAddress:
+          type: string
+          description: Street address
+        addressLine2:
+          type: string
+          description: Unit, suite, or PO Box
+          nullable: true
+        locality:
+          type: string
+          description: City or municipality name
+        adminArea:
+          type: string
+          description: State or province name or short form
+        country:
+          type: string
+          description: Country code (ISO 3166 2-Alpha)
+        postalCode:
+          type: string
+          description: Postal or zip code
+      description: Address full
+    ContactAddressPostBody:
+      title: AddressPostBody
+      required:
+        - addressType
+        - locality
+        - country
+        - postalCode
+        - adminArea
+        - streetAddress
+      type: object
+      properties:
+        addressType:
+          $ref: "#/components/schemas/AddressType"
+        streetAddress:
+          type: string
+          description: Street address
+        addressLine2:
+          type: string
+          description: Unit, suite, or PO Box
+          nullable: true
+        locality:
+          type: string
+          description: City or municipality name
+        adminArea:
+          type: string
+          description: State or province name or short form
+        country:
+          type: string
+          description: Country code (ISO 3166 2-Alpha)
+        postalCode:
+          type: string
+          description: Postal or zip code
+      description: Address Post Body Object
+      writeOnly: true
+    ContactAddressPatchBody:
+      title: AddressPatchBody
+      type: object
+      properties:
+        id:
+          type: string
+        streetAddress:
+          type: string
+          description: Street address
+          nullable: true
+        addressLine2:
+          type: string
+          description: Unit, suite, or PO Box
+          nullable: true
+        locality:
+          type: string
+          description: City or municipality name
+          nullable: true
+        adminArea:
+          type: string
+          description: State or province name or short form
+          nullable: true
+        country:
+          type: string
+          description: Country code (ISO 3166 2-Alpha)
+          nullable: true
+        postalCode:
+          type: string
+          description: Postal or zip code
+          nullable: true
+      description: Address full

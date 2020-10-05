@@ -1,0 +1,8 @@
+## terraform rancher 
+env/rancher/.terraform
+env/rancher/.terraform/*
+env/sbx-k8s/.terraform/
+env/rancher-infra/.terraform
+env/rancher-infra/terraform.tfstate
+env/rancher-infra/terraform.tfstate.backup
+

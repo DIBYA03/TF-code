@@ -1,0 +1,22 @@
+{
+  "resourcePath": "/business",
+  "httpMethod": "GET",
+  "headers": {
+    "Accept": "application/json"
+  },
+  "multiValueHeaders": {},
+  "queryStringParameters": {},
+  "multiValueQueryStringParameters": {},
+
+  "envVariables": {},
+  "body": "",
+  "isBase64Encoded": false,
+  "envId": "dev",
+  "requestId": "test-invoke-request",
+  "apiId": "r275xc9bmd",
+  "apiKey": "test-invoke-api-key",
+  "sourceIp": "127.0.0.1",
+  "userAgent": "Go 1.x Wise Test Client",
+  "userId": "b65a0d1f-34e0-4eb0-8ae6",
+  "startedAt": "2019-03-01T00:00:00.000Z"
+}

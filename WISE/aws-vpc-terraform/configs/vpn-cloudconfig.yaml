@@ -1,0 +1,12 @@
+#cloud-config
+repo_update: true
+repo_upgrade: all
+
+runcmd:
+  - sudo apt-get update && sudo apt-get install -y awscli
+  - export INSTANCE_ID=$(curl http://169.254.169.254/latest/meta-data/instance-id)
+  - aws ec2 associate-address --region ${aws_region} --instance-id $INSTANCE_ID --allocation-id ${eip_allocation_id}
+  - aws ec2 modify-instance-attribute --region ${aws_region} --instance-id $INSTANCE_ID --no-source-dest-check
+  - aws ec2 attach-volume --region ${aws_region} --instance-id $INSTANCE_ID --volume-id ${ebs_volume_id} --device /dev/sdb
+  - sudo echo "/dev/nvme1n1p1 /usr/local/openvpn_as ext4 defaults 0 0" >> /etc/fstab
+  - sudo service openvpnas stop && sleep 10 && sudo mount -a && sudo service openvpnas start

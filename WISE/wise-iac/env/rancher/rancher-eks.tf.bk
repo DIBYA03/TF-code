@@ -1,0 +1,42 @@
+variable "rancher_cluster_name" {
+  value = "${local.env}-cluster"
+}
+
+variable "AWS_ACCESS_KEY_ID" {
+  value = ""
+}
+
+variable "AWS_SECRET_ACCESS_KEY" {}
+
+variable "security_groups" {}
+
+variable "service_role" {}
+
+variable "subnets" {
+  type = list
+}
+
+variable ""
+
+resource "rancher2_cluster" "${local.env}-cluster" {
+  name        = var.rancher_cluster_name
+  description = "${var.rancher_cluster_name} Kubernetes cluster"
+
+  eks_config {
+    access_key                      = var.AWS_ACCESS_KEY_ID
+    secret_key                      = var.AWS_SECRET_ACCESS_KEY
+    security_groups                 = var.existing_vpc ? [var.security_group_name] : [""]
+    service_role                    = var.service_role != "" ? var.service_role : aws_iam_role.eks[0].name
+    subnets                         = var.existing_vpc ? list(var.subnet_id1, var.subnet_id2, var.subnet_id3) : [""]
+    ami                             = var.ami_id == "" ? data.aws_ami.distro.id : var.ami_id
+    associate_worker_node_public_ip = var.associate_worker_node_public_ip
+    instance_type                   = var.instance_type
+    kubernetes_version              = var.kubernetes_version
+    maximum_nodes                   = var.maximum_nodes
+    minimum_nodes                   = var.minimum_nodes
+    node_volume_size                = var.disk_size
+    region                          = var.region
+    session_token                   = var.session_token
+    virtual_network                 = var.vpc_id
+  }
+}

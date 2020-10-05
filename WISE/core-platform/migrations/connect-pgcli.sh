@@ -1,0 +1,4 @@
+#!/bin/bash
+
+export PGPASSWORD=$RDS_PASSWORD
+pgcli -U $RDS_USERNAME -h $RDS_HOSTNAME $RDS_DB_NAME

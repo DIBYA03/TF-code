@@ -1,0 +1,9 @@
+[Unit]
+Description=Job that runs the cloudwatch agent daemon
+
+[Service]
+Type=simple
+ExecStart=/opt/aws/amazon-cloudwatch-agent/bin/start-amazon-cloudwatch-agent
+
+[Install]
+WantedBy=multi-user.target

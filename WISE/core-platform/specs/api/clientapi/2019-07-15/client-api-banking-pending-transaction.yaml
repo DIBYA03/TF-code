@@ -1,0 +1,331 @@
+openapi: 3.0.1
+info:
+  title: ${api_name}
+  description: ${api_name} ${api_version}
+  version: ${api_version}
+servers:
+- url: https://${domain_name}/${api_version}
+  description: ${server_description}
+- url: https://${domain_name}/${api_stage}
+  description: ${server_description}
+paths:
+  /banking/pending_transaction/export:
+    get:
+      tags:
+      - Pending Transactions
+      description: Export pending transactions in CSV format
+      operationId: ExportPendingTransactions
+      parameters:
+      - name: startDate
+        in: query
+        description: Transaction start date
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: endDate
+        in: query
+        description: Transaction end date
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            text/csv:
+              schema:
+                type: string
+        400:
+          description: Bad Request
+          content: {}
+      x-amazon-apigateway-integration:
+        connectionType: INTERNET
+        contentHandling: CONVERT_TO_TEXT
+        httpMethod: POST
+        passthroughBehavior: when_no_match
+        responseTemplates:
+          application/json: |
+            {}
+        responses:
+          default:
+            statusCode: 200
+        type: aws_proxy
+        uri: ${banking_pending_transaction_export_lambda}
+      security:
+      - WiseUsersSandboxTestingPoolAuthorizer: []
+    options:
+      tags:
+      - Pending Transactions
+      parameters:
+      - name: startDate
+        in: query
+        description: Transaction start date
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: endDate
+        in: query
+        description: Transaction end date
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              description: CORS origin sites allowed
+              style: simple
+              explode: false
+              schema:
+                type: string
+            Access-Control-Allow-Origin:
+              description: CORS origin sites allowed
+              style: simple
+              explode: false
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              description: CORS http methods allows
+              style: simple
+              explode: false
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              description: CORS request headers allowed
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content: {}
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.X-Requested-With: '''*'''
+              method.response.header.Access-Control-Allow-Methods: '''DELETE, GET, OPTIONS, PATCH, POST'''
+              method.response.header.Access-Control-Allow-Headers: '''Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Requested-With,X-Amz-Security-Token,Access-Control-Allow-Origin'''
+              method.response.header.Access-Control-Allow-Origin: '''*'''
+        passthroughBehavior: when_no_match
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        type: mock
+  /banking/pending_transaction:
+    get:
+      tags:
+      - Pending Transactions
+      description: Get all pending transactions
+      operationId: GetPendingTransactions
+      parameters:
+      - name: limit
+        in: query
+        description: Max number of item to return
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+      - name: offset
+        in: query
+        description: Offset of items to return
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BusinessTransaction"
+        400:
+          description: Bad Request
+          content: {}
+      x-amazon-apigateway-integration:
+        connectionType: INTERNET
+        contentHandling: CONVERT_TO_TEXT
+        httpMethod: POST
+        passthroughBehavior: when_no_match
+        responseTemplates:
+          application/json: |
+            {}
+        responses:
+          default:
+            statusCode: 200
+        type: aws_proxy
+        uri: ${banking_pending_transaction_lambda}
+      security:
+      - WiseUsersSandboxTestingPoolAuthorizer: []
+    options:
+      tags:
+      - Pending Transactions
+      parameters:
+      - name: limit
+        in: query
+        description: Max number of item to return
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+      - name: offset
+        in: query
+        description: Offset of items to return
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              description: CORS origin sites allowed
+              style: simple
+              explode: false
+              schema:
+                type: string
+            Access-Control-Allow-Origin:
+              description: CORS origin sites allowed
+              style: simple
+              explode: false
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              description: CORS http methods allows
+              style: simple
+              explode: false
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              description: CORS request headers allowed
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content: {}
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.X-Requested-With: '''*'''
+              method.response.header.Access-Control-Allow-Methods: '''DELETE, GET, OPTIONS, PATCH, POST'''
+              method.response.header.Access-Control-Allow-Headers: '''Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Requested-With,X-Amz-Security-Token,Access-Control-Allow-Origin'''
+              method.response.header.Access-Control-Allow-Origin: '''*'''
+        passthroughBehavior: when_no_match
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        type: mock
+  /banking/pending_transaction/{transactionId}:
+    get:
+      tags:
+      - Pending Transactions
+      description: Get pending transaction by id
+      operationId: GetPendingTransaction
+      parameters:
+      - name: transactionId
+        in: path
+        description: Transaction id number
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BusinessTransaction'
+        400:
+          description: Bad Request
+          content: {}
+      x-amazon-apigateway-integration:
+        connectionType: INTERNET
+        contentHandling: CONVERT_TO_TEXT
+        httpMethod: POST
+        passthroughBehavior: when_no_match
+        responseTemplates:
+          application/json: |
+            {}
+        responses:
+          default:
+            statusCode: 200
+        type: aws_proxy
+        uri: ${banking_pending_transaction_lambda}
+      security:
+      - WiseUsersSandboxTestingPoolAuthorizer: []
+    options:
+      tags:
+      - Pending Transactions
+      parameters:
+      - name: transactionId
+        in: path
+        description: Transaction id number
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              description: CORS origin sites allowed
+              style: simple
+              explode: false
+              schema:
+                type: string
+            Access-Control-Allow-Origin:
+              description: CORS origin sites allowed
+              style: simple
+              explode: false
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              description: CORS http methods allows
+              style: simple
+              explode: false
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              description: CORS request headers allowed
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content: {}
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.X-Requested-With: '''*'''
+              method.response.header.Access-Control-Allow-Methods: '''DELETE, GET, OPTIONS, PATCH, POST'''
+              method.response.header.Access-Control-Allow-Headers: '''Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Requested-With,X-Amz-Security-Token,Access-Control-Allow-Origin'''
+              method.response.header.Access-Control-Allow-Origin: '''*'''
+        passthroughBehavior: when_no_match
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        type: mock

@@ -1,0 +1,80 @@
+# Please edit the object below. Lines beginning with a '#' will be ignored,
+# and an empty file will abort the edit. If an error occurs while saving this file will be
+# reopened with the relevant failures.
+#
+apiVersion: kops.k8s.io/v1alpha2
+kind: Cluster
+metadata:
+  creationTimestamp: "2020-07-03T10:45:14Z"
+  name: k8s.sbx.wise.us
+spec:
+  api:
+    dns: {}
+  authorization:
+    rbac: {}
+  channel: stable
+  cloudProvider: aws
+  configBase: s3://wiseus-us-west-2-k8s-state-store/k8s.sbx.wise.us
+  etcdClusters:
+  - cpuRequest: 200m
+    etcdMembers:
+    - instanceGroup: master-us-west-2a
+      name: a
+    - instanceGroup: master-us-west-2b
+      name: b
+    - instanceGroup: master-us-west-2c
+      name: c
+    memoryRequest: 100Mi
+    name: main
+    version: 3.2.24
+  - cpuRequest: 100m
+    etcdMembers:
+    - instanceGroup: master-us-west-2a
+      name: a
+    - instanceGroup: master-us-west-2b
+      name: b
+    - instanceGroup: master-us-west-2c
+      name: c
+    memoryRequest: 100Mi
+    name: events
+    version: 3.2.24
+  iam:
+    allowContainerRegistry: true
+    legacy: false
+  kubelet:
+    anonymousAuth: false
+  kubernetesApiAccess:
+  - 0.0.0.0/0
+  kubernetesVersion: 1.16.10
+  masterInternalName: api.internal.k8s.sbx.wise.us
+  masterPublicName: api.k8s.sbx.wise.us
+  networkCIDR: 10.5.0.0/16
+  networkID: vpc-02f9af6bc9a992cc0
+  networking:
+    calico:
+      majorVersion: v3
+  nonMasqueradeCIDR: 100.64.0.0/10
+  sshAccess:
+  - 0.0.0.0/0
+  subnets:
+  - cidr: 10.5.64.0/19
+    id: subnet-0eb7891955533032a
+    name: us-west-2a
+    type: Public
+    zone: us-west-2a
+  - cidr: 10.5.96.0/19
+    id: subnet-05e5a71809f48634c
+    name: us-west-2b
+    type: Public
+    zone: us-west-2b
+  - cidr: 10.5.128.0/19
+    id: subnet-021b772e9312b1c1d
+    name: us-west-2c
+    type: Public
+    zone: us-west-2c
+  topology:
+    dns:
+      type: Public
+    masters: public
+    nodes: public
+

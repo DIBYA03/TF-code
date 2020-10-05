@@ -1,0 +1,1040 @@
+openapi: 3.0.1
+info:
+  title: ${api_name}
+  description: ${api_name} ${api_version}
+  version: "1.0.0"
+servers:
+  - url: https://${domain_name}/${api_version}
+    description: ${server_description}
+  - url: https://${domain_name}/${api_stage}
+    description: ${server_description}
+paths:
+  /account/{accountId}/block:
+    get:
+      tags:
+        - Block Account
+      description: Get Block List
+      operationId: BlockList
+      parameters:
+        - name: accountId
+          in: path
+          description: Account id
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: "#/components/headers/X-Requested-With"
+            Access-Control-Allow-Headers:
+              $ref: "#/components/headers/Access-Control-Allow-Headers"
+            Access-Control-Allow-Methods:
+              $ref: "#/components/headers/Access-Control-Allow-Methods"
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccountBlockArray"
+        400:
+          description: Bad Request
+          content: {}
+      security:
+        - WiseCSPCognitoPoolAuthorizer: []
+      x-amazon-apigateway-integration:
+        passthroughBehavior: when_no_match
+        connectionType: INTERNET
+        uri: ${csp_support_account_block_lambda}
+        httpMethod: POST
+        contentHandling: CONVERT_TO_TEXT
+        type: aws_proxy
+        responses:
+          default:
+            statusCode: 200
+        responseTemplates:
+          application/json: |
+            {}
+    post:
+      tags:
+        - Block Account
+      description: Block Account by id
+      operationId: BlockAccount
+      parameters:
+        - name: accountId
+          in: path
+          description: Account id
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BlockPostBody"
+        required: true
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: "#/components/headers/X-Requested-With"
+            Access-Control-Allow-Headers:
+              $ref: "#/components/headers/Access-Control-Allow-Headers"
+            Access-Control-Allow-Methods:
+              $ref: "#/components/headers/Access-Control-Allow-Methods"
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BusinessBankAccount"
+        400:
+          description: Bad Request
+          content: {}
+      security:
+        - WiseCSPCognitoPoolAuthorizer: []
+      x-amazon-apigateway-integration:
+        passthroughBehavior: when_no_match
+        connectionType: INTERNET
+        uri: ${csp_support_account_block_lambda}
+        httpMethod: POST
+        contentHandling: CONVERT_TO_TEXT
+        type: aws_proxy
+        responses:
+          default:
+            statusCode: 200
+        responseTemplates:
+          application/json: |
+            {}
+    options:
+      tags:
+        - Block Account
+      parameters:
+        - name: accountId
+          in: path
+          description: Account Id
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: "#/components/headers/X-Requested-With"
+            Access-Control-Allow-Headers:
+              $ref: "#/components/headers/Access-Control-Allow-Headers"
+            Access-Control-Allow-Methods:
+              $ref: "#/components/headers/Access-Control-Allow-Methods"
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+          content: {}
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.X-Requested-With: "'*'"
+              method.response.header.Access-Control-Allow-Methods: "'*'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Requested-With,X-Amz-Security-Token,Access-Control-Allow-Origin'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        passthroughBehavior: when_no_match
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        type: mock
+  /account/{accountId}/unblock/{blockId}:
+    post:
+      tags:
+        - Block Account
+      description: Unblock Account by id
+      operationId: UnblockAccount
+      parameters:
+        - name: accountId
+          in: path
+          description: Account id
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: blockId
+          in: path
+          description: block id
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: "#/components/headers/X-Requested-With"
+            Access-Control-Allow-Headers:
+              $ref: "#/components/headers/Access-Control-Allow-Headers"
+            Access-Control-Allow-Methods:
+              $ref: "#/components/headers/Access-Control-Allow-Methods"
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BusinessBankAccount"
+        400:
+          description: Bad Request
+          content: {}
+      security:
+        - WiseCSPCognitoPoolAuthorizer: []
+      x-amazon-apigateway-integration:
+        passthroughBehavior: when_no_match
+        connectionType: INTERNET
+        uri: ${csp_support_account_unblock_lambda}
+        httpMethod: POST
+        contentHandling: CONVERT_TO_TEXT
+        type: aws_proxy
+        responses:
+          default:
+            statusCode: 200
+        responseTemplates:
+          application/json: |
+            {}
+    options:
+      tags:
+        - Block Account
+      parameters:
+        - name: accountId
+          in: path
+          description: Account id
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: blockId
+          in: path
+          description: block id
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: "#/components/headers/X-Requested-With"
+            Access-Control-Allow-Headers:
+              $ref: "#/components/headers/Access-Control-Allow-Headers"
+            Access-Control-Allow-Methods:
+              $ref: "#/components/headers/Access-Control-Allow-Methods"
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+          content: {}
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.X-Requested-With: "'*'"
+              method.response.header.Access-Control-Allow-Methods: "'*'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Requested-With,X-Amz-Security-Token,Access-Control-Allow-Origin'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        passthroughBehavior: when_no_match
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        type: mock
+  /user:
+    get:
+      description: Get User by search criteria
+      operationId: GetUser
+      tags:
+        - Support
+      parameters:
+        - name: firstName
+          in: query
+          required: false
+          explode: true
+          style: form
+          schema:
+            type: string
+        - name: phone
+          in: query
+          required: false
+          explode: true
+          style: form
+          schema:
+            type: string
+        - name: userId
+          in: query
+          required: false
+          explode: true
+          style: form
+          schema:
+            type: string
+        - name: coId
+          in: query
+          required: false
+          explode: true
+          style: form
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: "#/components/headers/X-Requested-With"
+            Access-Control-Allow-Headers:
+              $ref: "#/components/headers/Access-Control-Allow-Headers"
+            Access-Control-Allow-Methods:
+              $ref: "#/components/headers/Access-Control-Allow-Methods"
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+        400:
+          description: Bad Request
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      x-amazon-apigateway-integration:
+        passthroughBehavior: when_no_match
+        connectionType: INTERNET
+        uri: ${csp_support_lambda}
+        httpMethod: POST
+        contentHandling: CONVERT_TO_TEXT
+        type: aws_proxy
+        responses:
+          default:
+            statusCode: 200
+        responseTemplates:
+          application/json: |
+            {}
+      security:
+      - WiseCSPCognitoPoolAuthorizer: []
+    options:
+      description: Options
+      tags:
+        - Support
+      parameters:
+        - name: firstName
+          in: query
+          required: false
+          explode: true
+          style: form
+          schema:
+            type: string
+        - name: phone
+          in: query
+          required: false
+          explode: true
+          style: form
+          schema:
+            type: string
+        - name: userId
+          in: query
+          required: false
+          explode: true
+          style: form
+          schema:
+            type: string
+        - name: coId
+          in: query
+          required: false
+          explode: true
+          style: form
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: '#/components/headers/X-Requested-With'
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+          content: {}
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.X-Requested-With: '''*'''
+              method.response.header.Access-Control-Allow-Methods: '''*'''
+              method.response.header.Access-Control-Allow-Headers: '''Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Requested-With,X-Amz-Security-Token,Access-Control-Allow-Origin'''
+              method.response.header.Access-Control-Allow-Origin: '''*'''
+        passthroughBehavior: when_no_match
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        type: mock
+  /user/phone/{phone}:
+    get:
+      description: Get User by phone
+      operationId: GetUserByPhone
+      tags:
+        - Support
+      parameters:
+        - name: phone
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: "#/components/headers/X-Requested-With"
+            Access-Control-Allow-Headers:
+              $ref: "#/components/headers/Access-Control-Allow-Headers"
+            Access-Control-Allow-Methods:
+              $ref: "#/components/headers/Access-Control-Allow-Methods"
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        400:
+          description: Bad Request
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      x-amazon-apigateway-integration:
+        passthroughBehavior: when_no_match
+        connectionType: INTERNET
+        uri: ${csp_support_phone_lambda}
+        httpMethod: POST
+        contentHandling: CONVERT_TO_TEXT
+        type: aws_proxy
+        responses:
+          default:
+            statusCode: 200
+        responseTemplates:
+          application/json: |
+            {}
+      security:
+      - WiseCSPCognitoPoolAuthorizer: []
+    options:
+      description: Options
+      tags:
+        - Support
+      parameters:
+        - name: phone
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: '#/components/headers/X-Requested-With'
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+          content: {}
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.X-Requested-With: '''*'''
+              method.response.header.Access-Control-Allow-Methods: '''*'''
+              method.response.header.Access-Control-Allow-Headers: '''Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Requested-With,X-Amz-Security-Token,Access-Control-Allow-Origin'''
+              method.response.header.Access-Control-Allow-Origin: '''*'''
+        passthroughBehavior: when_no_match
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        type: mock
+  /user/{userId}:
+    get:
+      description: Get User by id
+      operationId: GetUserByID
+      tags:
+        - Support
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: "#/components/headers/X-Requested-With"
+            Access-Control-Allow-Headers:
+              $ref: "#/components/headers/Access-Control-Allow-Headers"
+            Access-Control-Allow-Methods:
+              $ref: "#/components/headers/Access-Control-Allow-Methods"
+            Access-Control-Allow-Origin:
+              $ref: "#/components/headers/Access-Control-Allow-Origin"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        400:
+          description: Bad Request
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      x-amazon-apigateway-integration:
+        passthroughBehavior: when_no_match
+        connectionType: INTERNET
+        uri: ${csp_support_lambda}
+        httpMethod: POST
+        contentHandling: CONVERT_TO_TEXT
+        type: aws_proxy
+        responses:
+          default:
+            statusCode: 200
+        responseTemplates:
+          application/json: |
+            {}
+      security:
+      - WiseCSPCognitoPoolAuthorizer: []
+    options:
+      description: Options
+      tags:
+        - Support
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: '#/components/headers/X-Requested-With'
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+          content: {}
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.X-Requested-With: '''*'''
+              method.response.header.Access-Control-Allow-Methods: '''*'''
+              method.response.header.Access-Control-Allow-Headers: '''Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Requested-With,X-Amz-Security-Token,Access-Control-Allow-Origin'''
+              method.response.header.Access-Control-Allow-Origin: '''*'''
+        passthroughBehavior: when_no_match
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        type: mock
+  /user/{userId}/account:
+    get:
+      tags:
+      - User Bank Accounts
+      description: Get multiple user bank accounts
+      operationId: GetMultipleUserBankAccounts
+      parameters:
+      - name: userId
+        in: path
+        description: User id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BusinessBankAccount'
+        400:
+          description: Bad Request
+          content: {}
+      x-amazon-apigateway-integration:
+        connectionType: INTERNET
+        contentHandling: CONVERT_TO_TEXT
+        httpMethod: POST
+        passthroughBehavior: when_no_match
+        responseTemplates:
+          application/json: |
+            {}
+        responses:
+          default:
+            statusCode: 200
+        type: aws_proxy
+        uri: ${csp_support_account_lambda}
+      security:
+      - WiseCSPCognitoPoolAuthorizer: []
+    options:
+      tags:
+      - User Bank Accounts
+      parameters:
+      - name: userId
+        in: path
+        description: User id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              description: CORS origin sites allowed
+              style: simple
+              explode: false
+              schema:
+                type: string
+            Access-Control-Allow-Origin:
+              description: CORS origin sites allowed
+              style: simple
+              explode: false
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              description: CORS http methods allows
+              style: simple
+              explode: false
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              description: CORS request headers allowed
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content: {}
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.X-Requested-With: '''*'''
+              method.response.header.Access-Control-Allow-Methods: '''*'''
+              method.response.header.Access-Control-Allow-Headers: '''Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Requested-With,X-Amz-Security-Token,Access-Control-Allow-Origin'''
+              method.response.header.Access-Control-Allow-Origin: '''*'''
+        passthroughBehavior: when_no_match
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        type: mock
+components:
+  schemas:
+    AccountBlockType:
+      title: Account Block Type Enum
+      type: string
+      description: Account Block
+      enum:
+      - credits
+      - debits
+      - checks
+      - all
+    AccountBlockArray:
+      title: Account Block Array
+      type: array
+      items:
+          $ref: "#/components/schemas/AccountBlock"
+    AccountBlock:
+      title: Account Block Object
+      properties:
+        id:
+          type: string
+          description: The block id
+        blockType:
+          oneOf:
+            - $ref: "#/components/schemas/AccountBlockType"
+        accountId:
+          type: string
+          description: The bank account id where this block has been set on
+        blockId:
+          type: string
+          description: The block id from the bank
+        reason:
+          type: string
+          description: The reason why this block was set
+        originatedFrom:
+          type: string
+          description: Used to track from where this block originated
+          example: "CSP"
+        deactivated:
+          type: string
+          description: Set when the block has been deactivated
+          nullable: true
+          example: ISO8601 date format e.g. YYYY-MM-DD
+        created:
+          type: string
+          description: The date when the block was set
+    BlockPostBody:
+      title: Block Post Body
+      required:
+        - blockType
+        - reason
+      type: object
+      properties:
+        blockType:
+          oneOf:
+            - $ref: "#/components/schemas/AccountBlockType"
+        reason:
+          type: string
+        originatedFrom:
+          type: string
+    User:
+      title: User Object
+      type: object
+      properties:
+        id:
+          type: string
+          description: User id
+        firstName:
+          type: string
+        middlename:
+          type: string
+        lastName:
+          type: string
+        taxIdMasked:
+          type: string
+        taxIdType:
+          $ref: '#/components/schemas/UserTaxIdType'
+        email:
+          type: string
+          nullable: true
+        emailVerified:
+          type: boolean
+        phone:
+          type: string
+        phoneVerified:
+          type: boolean
+        dateOfBirth:
+          type: string
+          nullable: true
+          example: ISO8601 date format e.g. YYYY-MM-DD
+        kycStatus:
+          $ref: '#/components/schemas/KYCStatus'
+        legalAddress:
+          $ref: '#/components/schemas/Address'
+        mailingAddress:
+          $ref: '#/components/schemas/Address'
+        residency:
+          $ref: '#/components/schemas/UserResidency'
+        citizenshipCountries:
+          type: array
+          items:
+            type: string
+        occupation:
+          $ref: '#/components/schemas/Occupation'
+        incomeType:
+          $ref: '#/components/schemas/IncomeTypeArray'
+        activityType:
+          $ref: '#/components/schemas/ActivityTypeArray'
+        notification:
+          $ref: '#/components/schemas/UserNotification'
+        created:
+          type: string
+          description: Date created
+          example: ISO8601 date time format e.g. YYYY-MM-DDTHH:MM:SSZ or YYYY-MM-DDTHH:MM:SS.SSSZ
+        updated:
+          type: string
+          description: Date updated
+          example: ISO8601 date time format e.g. YYYY-MM-DDTHH:MM:SSZ or YYYY-MM-DDTHH:MM:SS.SSSZ
+      description: User Object
+      readOnly: true
+    UserNotification:
+      title: User Notification Object
+      type: object
+      properties:
+        transfers:
+          type: boolean
+          description: Send on user  notification changes
+        transactions:
+          type: boolean
+          description:  Send on user  notification changes
+        contacts:
+          type: boolean
+          description: Send on user  notification changes
+      description: User Notification Object
+      readOnly: true
+    AddressType:
+      title: AddressType
+      type: string
+      description: Address  Enum
+      enum:
+        - legal
+        - mailing
+    Address:
+      title: Address
+      type: object
+      properties:
+        addressType:
+          $ref: "#/components/schemas/AddressType"
+        streetAddress:
+          type: string
+          description: Street address
+        addressLine2:
+          type: string
+          description: Unit, suite, or PO Box
+          nullable: true
+        city:
+          type: string
+          description: City name
+        state:
+          type: string
+          description: State or province name or short form
+        country:
+          type: string
+          description: Country code (ISO 3166 2-Alpha)
+        postalCode:
+          type: string
+          description: Postal or zip code
+        latitude:
+          type: number
+          description: Latitude of address
+          format: float64
+          nullable: true
+        longitude:
+          type: number
+          description: Longitude of address
+          format: float64
+          nullable: true
+      description: Address Object
+      readOnly: true
+    KYCStatus:
+      title: KYCStatusType
+      type: string
+      description: KYC status enum
+      enum:
+        - notStarted
+        - bankPending
+        - bankApproved
+        - bankReview
+        - bankDeclined
+        - cspPending
+        - cspApproved
+        - cspDeclined
+        - cspReview
+    ActivityType:
+      title: Activity Type Enum
+      type: string
+      description: Activity Type Enum
+      enum:
+        - cash
+        - check
+        - domesticWireTransfer
+        - internationalWireTransfer
+        - domesticACH
+        - internationalACH
+    ActivityTypeArray:
+      title: ActivityTypeArray
+      description: Activity Type Array
+      type: array
+      items:
+        $ref: "#/components/schemas/ActivityType"
+    ApprovalType:
+      title: ApprovalType
+      type: string
+      description: The business Approval decision.
+      enum:
+        - cspApproved
+        - cspDeclined
+    BusinessApprovalPostBody:
+      title: BusinessApprovalBodyType
+      type: object
+      properties:
+        reason:
+          type: string
+          nullable: true
+        notes:
+          type: string
+          nullable: true
+        approval:
+          type: string
+          oneOf:
+            - $ref: "#/components/schemas/ApprovalType"
+    UserTaxIdType:
+        title: User Tax Id Enum
+        type: string
+        description: User Tax Id Types
+        enum:
+          - ssn
+          - itin
+    ResidencyStatus:
+        title: ResidencyStatus
+        type: string
+        description: Residency Status Enum
+        enum:
+          - citizen
+          - resident
+          - nonResident
+    UserResidency:
+        title: UserResidency
+        required:
+          - address
+        type: object
+        properties:
+          country:
+            type: string
+          status:
+            $ref: '#/components/schemas/ResidencyStatus'
+        description: User Residency Object
+        writeOnly: true
+    Occupation:
+        title: Occupation
+        type: string
+        description: Occupation Enum
+        enum:
+          - financeAccountingTax
+          - fireFirstResponders
+          - healthcare
+          - homemaker
+          - laborGeneral
+          - laborSkilled
+          - lawEnforcementSecurity
+          - legalServices
+          - privateInvestor
+          - professionalAdministrative
+          - professionalManagement
+          - professionalOther
+          - professionalTechnical
+          - retired
+          - sales
+          - selfEmployed
+          - student
+          - transportation
+          - unemployed
+    IncomeType:
+        title: IncomeType
+        type: string
+        description: Income Type Enum
+        enum:
+          - inheritance
+          - salary
+          - companySales
+          - propertySales
+          - investments
+          - lifeInsurance
+          - divorceSettlement
+          - othe
+    IncomeTypeArray:
+        title: IncomeTypeArray
+        description: Income Type Array
+        type: array
+        items:
+          $ref: '#/components/schemas/IncomeType'
+    PartnerBankName:
+      title: PartnerBankName
+      type: string
+      description: Partner Bank Name Enum
+      enum:
+      - bbva
+    AccountType:
+      title: Account Type Enum
+      type: string
+      description: Account Types
+      enum:
+      - checking
+      - savings
+    AccountStatus:
+      title: Account Status Enum
+      type: string
+      description: Account Status Types
+      enum:
+      - active
+      - blocked
+      - locked
+      - closePending
+      - closed
+      - dormant
+      - abandoned
+      - escheated
+      - chargeOff
+    Currency:
+      title: Currency Type Enum
+      type: string
+      description: Currency Types
+      enum:
+      - usd
+    BusinessBankAccount:
+      title: Business Bank Account Object
+      type: object
+      properties:
+        id:
+          type: string
+          description: Bank account id
+        partnerBankName:
+          $ref: '#/components/schemas/PartnerBankName'
+        accountHolderId:
+          type: string
+          description: Account holder user id
+        businessId:
+          type: string
+          description: Business id
+        accountType:
+          $ref: '#/components/schemas/AccountType'
+        accountStatus:
+          $ref: '#/components/schemas/AccountStatus'
+        accountNumberMasked:
+          type: string
+          description: Account number
+        routingNumber:
+          type: string
+          description: ACH routing number
+        alias:
+          type: string
+          description: Account alias
+        availableBalance:
+          type: number
+          description: Available balance
+          format: float64
+        postedBalance:
+          type: number
+          description: Posted balance
+          format: float64
+        currency:
+          $ref: '#/components/schemas/Currency'
+        opened:
+          type: string
+          description: Date opened
+          example: ISO8601 date time format e.g. YYYY-MM-DDTHH:MM:SSZ or YYYY-MM-DDTHH:MM:SS.SSSZ
+        created:
+          type: string
+          description: Date created
+          example: ISO8601 date time format e.g. YYYY-MM-DDTHH:MM:SSZ or YYYY-MM-DDTHH:MM:SS.SSSZ
+        updated:
+          type: string
+          description: Date updated
+          example: ISO8601 date time format e.g. YYYY-MM-DDTHH:MM:SSZ or YYYY-MM-DDTHH:MM:SS.SSSZ
+      description: Business Bank Account Object
+      readOnly: true

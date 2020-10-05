@@ -1,0 +1,167 @@
+openapi: 3.0.1
+
+paths:
+  /address/validation:
+    post:
+      tags:
+      - Address Validation
+      description: Validate a give address
+      operationId: AddressValidation
+      requestBody:
+        content:
+          application/json, application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/AddressPostBody'
+        required: true
+      responses:
+        200:
+          description: OK
+          headers:
+            X-Requested-With:
+              $ref: '#/components/headers/X-Requested-With'
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Address'
+        404:
+          description: Not Found
+          content: {}
+      security:
+      - WiseCognitoPoolAuthorizer: []
+      x-amazon-apigateway-integration:
+        passthroughBehavior: when_no_match
+        connectionType: INTERNET
+        uri: ${user_lambda}
+        httpMethod: POST
+        contentHandling: CONVERT_TO_TEXT
+        type: aws_proxy
+        responses:
+          default:
+            statusCode: 200
+        responseTemplates:
+          application/json: |
+            {}
+    options:
+      tags:
+      - Address Validation
+      operationId: OptionsAddressValidation
+      parameters:
+      - name: userId
+        in: path
+        description: User id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: 200 response
+          headers:
+            X-Requested-With:
+              $ref: '#/components/headers/X-Requested-With'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: '''DELETE, GET, OPTIONS, PATCH, POST'''
+              method.response.header.X-Requested-With: '''*'''
+              method.response.header.Access-Control-Allow-Headers: '''Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Requested-With,X-Amz-Security-Token'''
+              method.response.header.Access-Control-Allow-Origin: '''*'''
+        passthroughBehavior: when_no_match
+        requestTemplates:
+          application/json: '{"statusCode": 200}'
+        type: mock
+components:
+  schemas:
+    AddressType:
+      title: AddressType
+      type: string
+      description: Address  Enum
+      enum:
+      - legal
+      - mailing
+    Address:
+      title: Address
+      type: object
+      properties:
+        streetAddress:
+          type: string
+          description: Street address
+        addressLine2:
+          type: string
+          description: Unit, suite, or PO Box
+          nullable: true
+        city:
+          type: string
+          description: City name
+        state:
+          type: string
+          description: State or province name or short form
+        country:
+          type: string
+          description: Country code (ISO 3166 2-Alpha)
+        postalCode:
+          type: string
+          description: Postal or zip code
+        latitude:
+          type: number
+          description: Latitude of address
+          format: float64
+          nullable: true
+        longitude:
+          type: number
+          description: Longitude of address
+          format: float64
+          nullable: true
+      description: Address Object
+      readOnly: true
+    AddressPostBody:
+      title: AddressPostBody
+      required:
+      - addressType
+      - city
+      - country
+      - postalCode
+      - state
+      - streetAddress
+      type: object
+      properties:
+        addressType:
+          $ref: '#/components/schemas/AddressType'
+        streetAddress:
+          type: string
+          description: Street address
+        addressLine2:
+          type: string
+          description: Unit, suite, or PO Box
+          nullable: true
+        city:
+          type: string
+          description: City name
+        state:
+          type: string
+          description: State or province name or short form
+        country:
+          type: string
+          description: Country code (ISO 3166 2-Alpha)
+        postalCode:
+          type: string
+          description: Postal or zip code
+      description: Address Post Body Object
+      writeOnly: true

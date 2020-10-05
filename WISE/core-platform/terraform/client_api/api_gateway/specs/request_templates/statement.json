@@ -1,0 +1,76 @@
+{
+  "resource": "/banking/business/{businessId}/account/{accountId}/statement/{statementId}",
+  "path": "$context.resourcePath",
+  "httpMethod": "$context.httpMethod",
+  "headers": {
+    #set($headerMap = $input.params().header)
+    #foreach( $key in $headerMap.keySet())
+      "$key" : "$util.escapeJavaScript($headerMap.get($key))"
+      #if($foreach.hasNext),#end
+    #end
+  },
+  "multiValueHeaders": {
+    #set($headerMap = $input.params().header)
+    #foreach( $key in $headerMap.keySet())
+      "$key" : ["$util.escapeJavaScript($headerMap.get($key))"]
+      #if($foreach.hasNext),#end
+    #end
+  },
+  "queryStringParameters": {
+    #set($queryMap = $input.params().querystring)
+    #foreach( $key in $queryMap.keySet())
+      "$key" : "$util.escapeJavaScript($queryMap.get($key))"
+      #if($foreach.hasNext),#end
+    #end
+  },
+  "multiValueQueryStringParameters": null,
+  "pathParameters": {
+    #set($pathMap = $input.params().path)
+    #foreach( $key in $pathMap.keySet())
+      "$key" : "$util.escapeJavaScript($pathMap.get($key))"
+      #if($foreach.hasNext),#end
+    #end
+  },
+  "stageVariables": null,
+  "requestContext": {
+    "accountId": "$context.accountId",
+    "resourceId": "$context.resourceId",
+    "operationName": "GetBusinessBankAccountStatement",
+    "stage": "$context.stage",
+    "requestId": "$context.requestId",
+    "identity": {
+      "cognitoIdentityPoolId": "$context.identity.cognitoIdentityPoolId",
+      "accountId": "$context.accountId",
+      "cognitoIdentityId": "$context.identity.cognitoIdentityId",
+      "caller": "",
+      "apiKey": "$context.identity.apiKey",
+      "accessKey": "",
+      "sourceIp": "$context.identity.sourceIp",
+      "cognitoAuthenticationType": "$context.identity.cognitoAuthenticationType",
+      "cognitoAuthenticationProvider": "$context.identity.cognitoAuthenticationProvider",
+      "userArn": "$context.identity.userArn",
+      "userAgent": "$context.identity.userAgent",
+      "user": "$context.identity.user"
+    },
+    "resourcePath": "$context.resourcePath",
+    "authorizer": {
+      "claims": {
+        "address": $context.authorizer.claims.address,
+        "aud": "$context.authorizer.claims.aud",
+        "auth_time": "$context.authorizer.claims.auth_time",
+        "cognito:username": "$context.authorizer.claims['cognito:username']",
+        "event_id": "$context.authorizer.claims.event_id",
+        "exp": "$context.authorizer.claims.exp",
+        "iat": "$context.authorizer.claims.iat",
+        "iss": "$context.authorizer.claims.iss",
+        "phone_number": "$context.authorizer.claims.phone_number",
+        "phone_number_verified": "$context.authorizer.claims.phone_number_verified",
+        "sub": "$context.authorizer.claims.sub",
+        "token_use": "$context.authorizer.claims.token_use"
+      }
+    },
+    "httpMethod": "GET",
+    "apiId": "$context.apiId"
+  },
+  "body": "$input.body"
+}

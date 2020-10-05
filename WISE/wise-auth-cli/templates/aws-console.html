@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+      html {
+        background: #282828 url(/images/wise-logo-bg.png) no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: auto;
+      }
+
+      body {
+        margin: 1em;
+      }
+
+      body, .container, .row, .col-sm, .list-group-item {
+        background: none !important;
+      }
+
+      .card {
+        background-color: #00bd9a;
+        border: 4px solid #000;
+      }
+
+
+    </style>
+    <title>AWS Console - Wise Company</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-right" style="color: #ccc;">
+      <span class="navbar-brand mb-0 h2">Credentials Expire at: {{ .Expiration }}</span>
+      <span class="navbar-brand mb-0 h3"><a href="/" class="btn btn-dark">Log back In</a></span>
+    </nav>
+    <div class="container">
+      <div class="row">
+        {{range $i, $e := .Errors}}
+          <div class="col-12">
+            <div class="alert alert-danger" role="alert">{{$e}}</div>
+          </div>
+        {{end}}
+        {{range $p := .Profiles}}
+          <div class="col-sm-12 col-md-3">
+            <div class="card text-center">
+              <div class="card-body">
+                <h5 class="card-title">{{$p.Name}} Account</h5>
+                <ul class="list-group list-group-flush">
+                  {{range $i, $r := $p.Roles}}
+
+                    <li class="list-group-item"><a href="{{ $r.URL }}" target="wise-aws-console" class="btn btn-dark">{{ $r.Name }} Role</a></li>
+                  {{end}}
+                </ul>
+              </div>
+            </div>
+          </div>
+        {{end}}
+      </div>
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>

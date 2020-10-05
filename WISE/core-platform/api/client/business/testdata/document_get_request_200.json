@@ -1,0 +1,25 @@
+{
+  "resourcePath": "/business/b43f37ce-d0ce-446a-8e53-17a235fe1f9c/document/33023bb2-db95-415b-aa1b-59b9dff0101b",
+  "httpMethod": "GET",
+  "headers": {
+    "Accept": "application/json"
+  },
+  "multiValueHeaders": {},
+  "queryStringParameters": {},
+  "multiValueQueryStringParameters": {},
+  "pathParameters": {
+    "businessId": "b43f37ce-d0ce-446a-8e53-17a235fe1f9c",
+    "documentId": "33023bb2-db95-415b-aa1b-59b9dff0101b"
+  },
+  "envVariables": {},
+  "body": "",
+  "isBase64Encoded": false,
+  "envId": "dev",
+  "requestId": "test-invoke-request",
+  "apiId": "r275xc9bmd",
+  "apiKey": "test-invoke-api-key",
+  "sourceIp": "127.0.0.1",
+  "userAgent": "Go 1.x Wise Test Client",
+  "userId": "1bf0faf1-cb57-4053-a2ae-e693ec99d7a3",
+  "startedAt": "2019-03-01T00:00:00.000Z"
+}

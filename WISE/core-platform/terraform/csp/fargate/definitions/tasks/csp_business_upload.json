@@ -1,0 +1,181 @@
+[
+  {
+    "name": "${name}",
+    "image": "${ecr_image}:${ecr_image_tag}",
+    "essential": true,
+    "cpu": ${fargate_cpu
+    },
+    "memory": ${fargate_memory
+    },
+    "networkMode": "awsvpc",
+    "portMappings": [],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "/ecs/${aws_log_group}",
+        "awslogs-region": "${aws_region}",
+        "awslogs-stream-prefix": "${name}"
+      }
+    },
+    "environment": [
+      {
+        "name": "AWS_S3_BUCKET_DOCUMENT",
+        "value": "${aws_s3_bucket_document}"
+      },
+      {
+        "name": "S3_ACH_PULL_WHITELIST",
+        "value": "${s3_ach_pull_whitelist}"
+      },
+      {
+        "name": "BBVA_REQUEUE_S3_OBJECT",
+        "value": "${bbva_requeue_s3_object}"
+      },
+      {
+        "name": "CSP_SQS_URL",
+        "value": "${csp_sqs_url}"
+      },
+      {
+        "name": "CSP_SQS_REGION",
+        "value": "${csp_sqs_region}"
+      },
+      {
+        "name": "SQS_REGION",
+        "value": "${sqs_region}"
+      },
+      {
+        "name": "SEGMENT_SQS_URL",
+        "value": "${segment_sqs_url}"
+      }
+    ],
+    "secrets": [
+      {
+        "name": "BBVA_APP_ENV",
+        "valueFrom": "${bbva_app_env}"
+      },
+      {
+        "name": "BBVA_APP_ID",
+        "valueFrom": "${bbva_app_id}"
+      },
+      {
+        "name": "BBVA_APP_NAME",
+        "valueFrom": "${bbva_app_name}"
+      },
+      {
+        "name": "BBVA_APP_SECRET",
+        "valueFrom": "${bbva_app_secret}"
+      },
+      {
+        "name": "BANK_DB_WRITE_URL",
+        "valueFrom": "${bank_db_write_url}"
+      },
+      {
+        "name": "BANK_DB_READ_URL",
+        "valueFrom": "${bank_db_read_url}"
+      },
+      {
+        "name": "BANK_DB_WRITE_PORT",
+        "valueFrom": "${bank_db_write_port}"
+      },
+      {
+        "name": "BANK_DB_READ_PORT",
+        "valueFrom": "${bank_db_read_port}"
+      },
+      {
+        "name": "BANK_DB_NAME",
+        "valueFrom": "${bank_db_name}"
+      },
+      {
+        "name": "BANK_DB_USER",
+        "valueFrom": "${bank_db_user}"
+      },
+      {
+        "name": "BANK_DB_PASSWD",
+        "valueFrom": "${bank_db_passwd}"
+      },
+      {
+        "name": "CORE_DB_READ_URL",
+        "valueFrom": "${core_db_read_url}"
+      },
+      {
+        "name": "CORE_DB_READ_PORT",
+        "valueFrom": "${core_db_read_port}"
+      },
+      {
+        "name": "CORE_DB_WRITE_URL",
+        "valueFrom": "${core_db_write_url}"
+      },
+      {
+        "name": "CORE_DB_WRITE_PORT",
+        "valueFrom": "${core_db_write_port}"
+      },
+      {
+        "name": "CORE_DB_NAME",
+        "valueFrom": "${core_db_name}"
+      },
+      {
+        "name": "CORE_DB_USER",
+        "valueFrom": "${core_db_user}"
+      },
+      {
+        "name": "CORE_DB_PASSWD",
+        "valueFrom": "${core_db_passwd}"
+      },
+      {
+        "name": "CSP_DB_READ_URL",
+        "valueFrom": "${csp_db_read_url}"
+      },
+      {
+        "name": "CSP_DB_READ_PORT",
+        "valueFrom": "${csp_db_read_port}"
+      },
+      {
+        "name": "CSP_DB_WRITE_URL",
+        "valueFrom": "${csp_db_write_url}"
+      },
+      {
+        "name": "CSP_DB_WRITE_PORT",
+        "valueFrom": "${csp_db_write_port}"
+      },
+      {
+        "name": "CSP_DB_NAME",
+        "valueFrom": "${csp_db_name}"
+      },
+      {
+        "name": "CSP_DB_USER",
+        "valueFrom": "${csp_db_user}"
+      },
+      {
+        "name": "CSP_DB_PASSWD",
+        "valueFrom": "${csp_db_passwd}"
+      },
+      {
+        "name": "IDENTITY_DB_WRITE_URL",
+        "valueFrom": "${identity_db_write_url}"
+      },
+      {
+        "name": "IDENTITY_DB_READ_URL",
+        "valueFrom": "${identity_db_read_url}"
+      },
+      {
+        "name": "IDENTITY_DB_WRITE_PORT",
+        "valueFrom": "${identity_db_write_port}"
+      },
+      {
+        "name": "IDENTITY_DB_READ_PORT",
+        "valueFrom": "${identity_db_read_port}"
+      },
+      {
+        "name": "IDENTITY_DB_NAME",
+        "valueFrom": "${identity_db_name}"
+      },
+      {
+        "name": "IDENTITY_DB_USER",
+        "valueFrom": "${identity_db_user}"
+      },
+      {
+        "name": "IDENTITY_DB_PASSWD",
+        "valueFrom": "${identity_db_passwd}"
+      }
+    ]
+  }
+]
